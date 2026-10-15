@@ -3,8 +3,8 @@
   "private": true,
   "packageManager": "pnpm@10.17.1",
   "scripts": {
-    "build": "pnpm --filter @citizenx/domain build && pnpm --filter @citizenx/web build && pnpm --filter @citizenx/api build",
-    "build:web": "pnpm --filter @citizenx/domain build && pnpm --filter @citizenx/web build",
+    "build": "pnpm --filter @citizenx/domain build && pnpm --filter @citizenx/web build && pnpm --filter @citizenx/api build && node scripts/sync-site-output.mjs",
+    "build:web": "pnpm --filter @citizenx/domain build && pnpm --filter @citizenx/web build && node scripts/sync-site-output.mjs",
     "dev": "pnpm --parallel --filter @citizenx/web --filter @citizenx/api dev",
     "dev:web": "pnpm --filter @citizenx/web dev",
     "test": "pnpm --recursive test",
