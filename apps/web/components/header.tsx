@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "./logo";
+import { RoleSwitcher } from "./role-switcher";
 
 export function Header() {
   return (
@@ -8,14 +9,14 @@ export function Header() {
         <Logo />
         <nav aria-label="Primary navigation">
           <Link href="/discover/">Discover</Link>
+          <Link href="/suppliers/">Suppliers</Link>
           <Link href="/how-it-works/">How it works</Link>
-          <Link href="/about/">About</Link>
         </nav>
-        <Link className="button button-small button-light" href="/discover/">
-          Find a campaign
-        </Link>
+        <div className="header-actions">
+          <RoleSwitcher />
+          <Link className="button button-small button-light" href="/sandbox/">Open sandbox</Link>
+        </div>
       </div>
     </header>
   );
 }
-

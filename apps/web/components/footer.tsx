@@ -12,6 +12,8 @@ export function Footer() {
         </div>
         <nav aria-label="Footer navigation">
           <Link href="/discover/">Discover campaigns</Link>
+          <Link href="/suppliers/">Verified suppliers</Link>
+          <Link href="/sandbox/">Sandbox workspace</Link>
           <Link href="/how-it-works/">How it works</Link>
           <Link href="/about/">About CitizenX</Link>
           <a href="https://www.citizenx.fund/">Founding network</a>
@@ -25,4 +27,3 @@ export function Footer() {
     </footer>
   );
 }
-

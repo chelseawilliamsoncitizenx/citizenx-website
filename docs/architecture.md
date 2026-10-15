@@ -10,11 +10,12 @@ CitizenX starts as a TypeScript monorepo with a Next.js citizen experience, a Ne
 | --- | --- | --- |
 | Web | Next.js App Router and static export | Server-rendered public campaign pages behind `app.citizenx.fund` |
 | API | NestJS health and payment boundary | Modular identity, campaign, ledger, payment, compliance and admin services |
-| Data | Typed fixtures and browser-local sandbox records | PostgreSQL in `af-south-1`, migrations and encrypted backups |
+| Data | Typed campaign and supplier fixtures plus browser-local sandbox workflow records | PostgreSQL in `af-south-1`, migrations and encrypted backups |
 | Ledger | Balanced integer-cent domain transactions | ACID double-entry tables with immutable entries and hash chaining |
 | Authentication | No identity data in the pilot | OTP-first identity with scoped roles |
 | Payments | Replaceable sandbox gateway | PSP abstraction for Paystack/Peach/Ozow and controlled payouts |
-| Verification | Fixed sandbox success state | KYD/KYB, PEP and sanctions providers behind adapters |
+| Verification | Mock evidence declarations, approval states and engagement-gated supplier reviews | KYD/KYB, PEP and sanctions providers behind adapters |
+| Advertising | Fixed-price, clearly labelled browser-local supplier promotions | Auditable inventory, billing, moderation and reporting services |
 | Hosting | Private Sites review deployment | AWS `af-south-1`; marketing remains at `citizenx.fund` |
 
 ## Money invariants
@@ -28,4 +29,3 @@ CitizenX starts as a TypeScript monorepo with a Next.js citizen experience, a Ne
 ## Accessibility baseline
 
 The pilot includes semantic landmarks, a skip link, keyboard-visible focus, labelled controls, accessible progress indicators, status announcements, responsive layouts and reduced-motion support. Automated and manual audits remain a release gate before public use.
-

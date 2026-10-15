@@ -6,7 +6,7 @@ Decision group: **Patrick, Lindo and Thato**
 
 ## Review build now available
 
-The first vertical slice demonstrates the complete citizen trust journey: discover a campaign, understand its verification and milestones, make a simulated contribution, choose ledger privacy, and see that contribution appear in a privacy-safe ledger.
+The review build demonstrates the citizen trust journey and the connected campaign marketplace: discover and fund a campaign, create and approve a campaign, register or assign a supplier, simulate completion and payment, publish an engagement-gated review, and buy a clearly labelled sandbox promotion.
 
 ## Remaining work to reach pilot readiness
 
@@ -15,10 +15,10 @@ The first vertical slice demonstrates the complete citizen trust journey: discov
 3. Persist campaigns, users and ledger transactions in PostgreSQL.
 4. Connect one sandbox pay-in provider and verify webhook idempotency.
 5. Connect a sandbox identity/KYD provider.
-6. Add campaign-admin approval and evidence workflows.
+6. Replace browser-local campaign, supplier, review and advertising records with server-side persistence and audit logs.
 7. Complete threat modelling, reconciliation tests and WCAG 2.2 AA audit.
-8. Obtain legal sign-off for entity routing, trust language, PPFA controls and s18A treatment before real-money use.
+8. Obtain legal sign-off for entity routing, trust language, PPFA controls, advertising rules and s18A treatment before real-money use.
 
 ## Explicitly deferred
 
-Supplier advertising, production payouts, full supplier opportunity matching, recurring giving, multi-language content and regulatory export suites are outside this first review slice.
+Production payouts, supplier bidding and quote comparison, recurring giving, multi-language content and regulatory export suites are outside this review slice.

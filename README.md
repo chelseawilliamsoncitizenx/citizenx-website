@@ -9,10 +9,14 @@ CitizenX is independent digital infrastructure for transparent political and civ
 - Three-step sandbox contribution flow
 - Privacy and source-of-funds choices
 - Privacy-safe public campaign ledger
+- Four-persona sandbox for citizens, campaign creators, suppliers and administrators
+- Five-step campaign creation and founding-team approval workflow
+- Verified supplier directory with completed-job ratings and reviews
+- Supplier registration, milestone assignment and clearly labelled paid promotions
 - Shared integer-cent money and ledger rules
 - NestJS API boundary with a replaceable sandbox payment gateway
 
-No real payments, identity checks or personal data are processed in this pilot.
+No real payments, identity checks, advertising charges or personal data are processed in this pilot. Interactive workflow records remain in the visitor's browser.
 
 ## Stack
 
@@ -47,4 +51,3 @@ pnpm build
 - Keep regulatory thresholds and beneficiary routing configurable pending legal sign-off.
 
 See [docs/architecture.md](docs/architecture.md) and [docs/pilot-plan.md](docs/pilot-plan.md) for the implementation boundary and delivery plan.
-
