@@ -1,7 +1,7 @@
 import { campaigns } from "@citizenx/domain";
 import Link from "next/link";
 import { CampaignCard } from "../components/campaign-card";
-import { ArrowIcon } from "../components/icons";
+import { ArrowIcon, FeatureIcon } from "../components/icons";
 import { LedgerPreview } from "../components/ledger-preview";
 import { TrustStrip } from "../components/trust-strip";
 
@@ -9,6 +9,7 @@ export default function HomePage() {
   return (
     <>
       <section className="hero">
+        <span className="hero-shape" aria-hidden="true" />
         <div className="shell hero-grid">
           <div className="hero-copy">
             <p className="eyebrow eyebrow-light">Democracy, funded by the people.</p>
@@ -46,10 +47,10 @@ export default function HomePage() {
           <p className="eyebrow">How CitizenX works</p>
           <h2 id="journey-title">Accountability, built into every step.</h2>
           <ol className="step-grid">
-            <li><span>01</span><h3>Verify</h3><p>Campaign leaders, donors and suppliers pass appropriate checks.</p></li>
-            <li><span>02</span><h3>Raise</h3><p>Clear goals, budgets and milestones show what funding will achieve.</p></li>
-            <li><span>03</span><h3>Track</h3><p>Supporters see contributions, protected balances and verified activity.</p></li>
-            <li><span>04</span><h3>Account</h3><p>Suppliers are paid against evidence, with a public audit trail.</p></li>
+            <li><div className="step-marker"><span>01</span><i aria-hidden="true"><FeatureIcon name="verify" /></i></div><h3>Verify</h3><p>Campaign leaders, donors and suppliers pass appropriate checks.</p></li>
+            <li><div className="step-marker"><span>02</span><i aria-hidden="true"><FeatureIcon name="campaign" /></i></div><h3>Raise</h3><p>Clear goals, budgets and milestones show what funding will achieve.</p></li>
+            <li><div className="step-marker"><span>03</span><i aria-hidden="true"><FeatureIcon name="track" /></i></div><h3>Track</h3><p>Supporters see contributions, protected balances and verified activity.</p></li>
+            <li><div className="step-marker"><span>04</span><i aria-hidden="true"><FeatureIcon name="account" /></i></div><h3>Account</h3><p>Suppliers are paid against evidence, with a public audit trail.</p></li>
           </ol>
         </div>
       </section>

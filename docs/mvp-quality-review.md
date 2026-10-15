@@ -11,10 +11,16 @@ Reviewed: 15 October 2026
 - Added supplier rating thresholds and preserved the separation between sponsored visibility, verification and organic trust signals.
 - Added focus management to multi-step donation, campaign creation and supplier promotion flows.
 - Added an accessibility statement and a direct way to report barriers.
+- Corrected font-variable scope so Bricolage Grotesque and Inter now render reliably instead of falling back to a compressed serif face.
+- Rebuilt the About experience around CitizenX's current public story: the trust problem, the accountable funding model, operating principles, why now and ways to participate.
+- Added a compact icon and geometric accent system derived from the public CitizenX brand language.
+- Moved essential journeys into the main header and added keyboard-accessible secondary navigation.
+- Made the header and sandbox role-aware, with distinct Citizen, Campaign Creator, Supplier and Admin tools.
+- Split Admin work into campaign and supplier approval queues, each with sandbox decisions and a founding-team reviewer trail.
 
 ## Accessibility verification
 
-The implementation targets WCAG 2.2 Level AA. Axe-core 4.13.0 was run with the `wcag2a`, `wcag2aa`, `wcag21aa` and `wcag22aa` tags against 12 representative routes:
+The implementation targets WCAG 2.2 Level AA. Axe-core 4.13.0 was run with the `wcag2a`, `wcag2aa`, `wcag21aa` and `wcag22aa` tags against 15 representative routes:
 
 - Home
 - Find a campaign
@@ -24,10 +30,13 @@ The implementation targets WCAG 2.2 Level AA. Axe-core 4.13.0 was run with the `
 - Sandbox hub
 - Campaign creator
 - Admin review
+- Supplier approval
 - Verified suppliers
 - Supplier registration
 - Supplier promotion
 - Accessibility statement
+- About CitizenX
+- How CitizenX works
 
 Final result: zero automated violations across the tested routes.
 

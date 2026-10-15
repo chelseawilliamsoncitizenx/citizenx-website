@@ -17,7 +17,7 @@ export default function SuppliersPage() {
           </div>
           <div className="directory-ctas"><Link className="button button-primary" href="/suppliers/register/">Register as a supplier</Link><Link className="button button-secondary" href="/suppliers/promote/">Promote your services</Link></div>
         </div>
-        <div className="marketplace-principles" aria-label="Marketplace safeguards"><span>✓ Verification cannot be bought</span><span>✓ Reviews require completed work</span><span>✓ Paid placements are clearly labelled</span></div>
+        <div className="marketplace-principles" role="group" aria-label="Marketplace safeguards"><span>✓ Verification cannot be bought</span><span>✓ Reviews require completed work</span><span>✓ Paid placements are clearly labelled</span></div>
         <SupplierDirectory suppliers={suppliers} />
       </div>
     </section>

@@ -22,7 +22,8 @@ export interface SandboxSupplierApplication {
   serviceArea: string;
   contactName: string;
   submittedAt: string;
-  status: "under_verification" | "approved";
+  status: "under_verification" | "approved" | "changes_requested";
+  reviewer?: string;
 }
 
 export interface SandboxAssignment {
@@ -105,4 +106,16 @@ export const seedSandboxCampaign: SandboxCampaign = {
   ],
   submittedAt: "2026-10-14T09:00:00.000Z",
   status: "under_review"
+};
+
+export const seedSupplierApplication: SandboxSupplierApplication = {
+  id: "supplier-seed-greenline",
+  businessName: "GreenLine Solar Co-op",
+  registrationNumber: "2024/084216/24",
+  category: "Solar and electrical",
+  location: "Soweto, Gauteng",
+  serviceArea: "Gauteng",
+  contactName: "Naledi Mokoena",
+  submittedAt: "2026-10-14T11:30:00.000Z",
+  status: "under_verification"
 };

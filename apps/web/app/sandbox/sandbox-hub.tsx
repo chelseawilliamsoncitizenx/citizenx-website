@@ -2,25 +2,40 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { keys, readSandbox, roleLabels, seedSandboxCampaign, type SandboxAdvert, type SandboxAssignment, type SandboxCampaign, type SandboxRole, type SandboxSupplierApplication, writeSandbox } from "../../lib/sandbox-store";
+import { FeatureIcon, type FeatureIconName } from "../../components/icons";
+import { keys, readSandbox, roleLabels, seedSandboxCampaign, seedSupplierApplication, type SandboxAdvert, type SandboxAssignment, type SandboxCampaign, type SandboxRole, type SandboxSupplierApplication, writeSandbox } from "../../lib/sandbox-store";
 
-const roleActions: Record<SandboxRole, Array<{ title: string; copy: string; href: string; cta: string }>> = {
+const roleActions: Record<SandboxRole, Array<{ title: string; copy: string; href: string; cta: string; icon: FeatureIconName }>> = {
   citizen: [
-    { title: "Find a verified campaign", copy: "Find a cause, contribute with sandbox money and follow its ledger.", href: "/discover/", cta: "Browse campaigns" },
-    { title: "Explore trusted suppliers", copy: "See verification, ratings, reviews and clearly labelled promotions.", href: "/suppliers/", cta: "View suppliers" }
+    { title: "Find a verified campaign", copy: "Find a cause, contribute with sandbox money and follow its ledger.", href: "/discover/", cta: "Browse campaigns", icon: "search" },
+    { title: "Explore trusted suppliers", copy: "See verification, ratings, reviews and clearly labelled promotions.", href: "/suppliers/", cta: "View suppliers", icon: "supplier" }
   ],
   campaign_creator: [
-    { title: "Create a campaign", copy: "Build a goal, budget and milestones, then submit for founder approval.", href: "/create-campaign/", cta: "Start campaign" },
-    { title: "Choose verified suppliers", copy: "Assign suppliers to a milestone and review them only after completed work.", href: "/suppliers/", cta: "Find a supplier" }
+    { title: "Create a campaign", copy: "Build a goal, budget and milestones, then submit for founder approval.", href: "/create-campaign/", cta: "Start campaign", icon: "campaign" },
+    { title: "Choose verified suppliers", copy: "Assign suppliers to a milestone and review them only after completed work.", href: "/suppliers/", cta: "Find a supplier", icon: "supplier" }
   ],
   supplier: [
-    { title: "Register your business", copy: "Submit service and compliance details for mock verification.", href: "/suppliers/register/", cta: "Apply for verification" },
-    { title: "Promote your services", copy: "Buy a clearly labelled 7- or 30-day sponsored placement with a sandbox payment.", href: "/suppliers/promote/", cta: "Create an advert" }
+    { title: "Register your business", copy: "Submit service and compliance details for mock verification.", href: "/suppliers/register/", cta: "Apply for verification", icon: "verify" },
+    { title: "Promote your services", copy: "Buy a clearly labelled 7- or 30-day sponsored placement with a sandbox payment.", href: "/suppliers/promote/", cta: "Create an advert", icon: "megaphone" }
   ],
   admin: [
-    { title: "Review campaign submissions", copy: "Approve a campaign or request changes with an auditable decision.", href: "/admin/review/", cta: "Open review queue" },
-    { title: "Check supplier marketplace", copy: "Inspect how verified, sponsored and reviewed suppliers appear to creators.", href: "/suppliers/", cta: "Inspect directory" }
+    { title: "Review campaign submissions", copy: "Approve a campaign or request changes with an auditable decision.", href: "/admin/review/", cta: "Review campaigns", icon: "campaign" },
+    { title: "Approve supplier applications", copy: "Check registration, authorised contacts and service evidence before approval.", href: "/admin/suppliers/", cta: "Review suppliers", icon: "supplier" }
   ]
+};
+
+const roleDescriptions: Record<SandboxRole, string> = {
+  citizen: "Discover causes, contribute safely and inspect the public evidence trail.",
+  campaign_creator: "Build a transparent proposal, appoint verified suppliers and report delivery.",
+  supplier: "Apply for verification, promote services transparently and build a rated track record.",
+  admin: "Protect trust by approving campaigns and suppliers through separate review queues."
+};
+
+const roleIcons: Record<SandboxRole, FeatureIconName> = {
+  citizen: "community",
+  campaign_creator: "campaign",
+  supplier: "supplier",
+  admin: "shield"
 };
 
 export function SandboxHub() {
@@ -31,7 +46,7 @@ export function SandboxHub() {
     setRole(readSandbox<SandboxRole>(keys.role, "citizen"));
     setCounts({
       campaigns: readSandbox<SandboxCampaign[]>(keys.campaigns, [seedSandboxCampaign]).length,
-      applications: readSandbox<SandboxSupplierApplication[]>(keys.supplierApplications, []).length,
+      applications: readSandbox<SandboxSupplierApplication[]>(keys.supplierApplications, [seedSupplierApplication]).length,
       assignments: readSandbox<SandboxAssignment[]>(keys.assignments, []).length,
       adverts: readSandbox<SandboxAdvert[]>(keys.adverts, []).length
     });
@@ -72,6 +87,11 @@ export function SandboxHub() {
       </aside>
 
       <div>
+        <div className={`role-banner role-banner-${role}`} role="status" aria-live="polite">
+          <span className="role-banner-icon" aria-hidden="true"><FeatureIcon name={roleIcons[role]} size={30} /></span>
+          <div><p>You are viewing CitizenX as</p><h2>{roleLabels[role]}</h2><span>{roleDescriptions[role]}</span></div>
+          {role === "admin" ? <div className="role-banner-links"><Link href="/admin/review/">Campaign approvals</Link><Link href="/admin/suppliers/">Supplier approvals</Link></div> : null}
+        </div>
         <div className="workspace-summary">
           <div><span>Campaigns</span><strong>{counts.campaigns}</strong></div>
           <div><span>Supplier applications</span><strong>{counts.applications}</strong></div>
@@ -82,7 +102,7 @@ export function SandboxHub() {
         <div className="workspace-action-grid">
           {roleActions[role].map((action, index) => (
             <article key={action.href}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
+              <div className="workspace-action-mark"><span>{String(index + 1).padStart(2, "0")}</span><i aria-hidden="true"><FeatureIcon name={action.icon} /></i></div>
               <h2>{action.title}</h2>
               <p>{action.copy}</p>
               <Link className="button button-primary" href={action.href}>{action.cta}</Link>

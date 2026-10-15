@@ -9,7 +9,7 @@ const rows = [
 
 export function LedgerPreview() {
   return (
-    <div className="ledger-preview" aria-label="Example transparent campaign ledger">
+    <div className="ledger-preview" role="group" aria-label="Example transparent campaign ledger">
       <div className="ledger-preview-head">
         <div>
           <p className="eyebrow">Live campaign</p>
