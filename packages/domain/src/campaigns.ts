@@ -1,4 +1,4 @@
-export type CampaignCategory = "Community" | "Education" | "Youth";
+export type CampaignCategory = "Community" | "Democracy" | "Education" | "Environment" | "Youth";
 export type CampaignStatus = "verified" | "funding" | "delivering";
 
 export interface CampaignMilestone {
@@ -28,6 +28,8 @@ export interface Campaign {
     organisation: string;
     verified: boolean;
   };
+  image: string;
+  imageAlt: string;
   accent: "teal" | "purple" | "saffron";
   milestones: CampaignMilestone[];
 }
@@ -48,6 +50,8 @@ export const campaigns: Campaign[] = [
     contributorCount: 412,
     daysRemaining: 18,
     leader: { name: "Naledi Mokoena", organisation: "Ward 12 Community Forum", verified: true },
+    image: "/images/campaigns/clinic-water-tank.jpg",
+    imageAlt: "Two technicians inspect a new water storage tank outside a community clinic.",
     accent: "teal",
     milestones: [
       { id: "tank", title: "Storage tank", description: "Supply and delivery of a 10,000 litre tank.", amountCents: 2850000, status: "funded" },
@@ -70,6 +74,8 @@ export const campaigns: Campaign[] = [
     contributorCount: 287,
     daysRemaining: 27,
     leader: { name: "Ayanda Ndlovu", organisation: "Khanyisa Primary SGB", verified: true },
+    image: "/images/campaigns/school-library.jpg",
+    imageAlt: "School staff arrange books in a bright restored library.",
     accent: "purple",
     milestones: [
       { id: "repairs", title: "Room repairs", description: "Roof, paint and safe electrical work.", amountCents: 2800000, status: "funded" },
@@ -92,11 +98,85 @@ export const campaigns: Campaign[] = [
     contributorCount: 169,
     daysRemaining: 41,
     leader: { name: "Kagiso Dlamini", organisation: "Future Block Youth Centre", verified: true },
+    image: "/images/campaigns/youth-skills-lab.jpg",
+    imageAlt: "Young people work at laptops with a facilitator in a community skills lab.",
     accent: "saffron",
     milestones: [
       { id: "devices", title: "Learning devices", description: "Twelve refurbished laptops with warranties.", amountCents: 7800000, status: "planned" },
       { id: "power", title: "Backup power", description: "Inverter installation and safety certificate.", amountCents: 4200000, status: "planned" },
       { id: "connectivity", title: "Connectivity", description: "Twelve months of managed connectivity.", amountCents: 3000000, status: "planned" }
+    ]
+  },
+  {
+    slug: "delft-flood-resilience-hub",
+    title: "Delft flood resilience hub",
+    summary: "Equip a trusted neighbourhood response point before the next winter floods.",
+    story: "Repeated flooding leaves families waiting for essential supplies and reliable local information. This campaign creates a community-managed response point with sealed storage, emergency lighting and pre-positioned relief packs. CitizenX will pay verified suppliers for each approved milestone and publish completion evidence.",
+    location: "Delft, Western Cape",
+    category: "Community",
+    status: "funding",
+    beneficiaryType: "public_interest",
+    entityRoute: "npc",
+    raisedCents: 4685000,
+    goalCents: 10500000,
+    contributorCount: 198,
+    daysRemaining: 33,
+    leader: { name: "Zimasa Nqoko", organisation: "Delft Resilience Network", verified: true },
+    image: "/images/campaigns/flood-resilience-hub.jpg",
+    imageAlt: "Volunteers organise water, blankets and emergency lights in a community storeroom.",
+    accent: "teal",
+    milestones: [
+      { id: "storage", title: "Secure storage", description: "Weatherproof shelving, lockable cabinets and safety signage.", amountCents: 3200000, status: "funded" },
+      { id: "supplies", title: "Emergency supplies", description: "Water, blankets, lights and first-response packs from verified suppliers.", amountCents: 4100000, status: "in_progress" },
+      { id: "training", title: "Readiness training", description: "Practical response training and a public inventory handover.", amountCents: 3200000, status: "planned" }
+    ]
+  },
+  {
+    slug: "accessible-ward-assemblies",
+    title: "Accessible ward assembly series",
+    summary: "Make six public ward meetings accessible to residents with disabilities.",
+    story: "Public participation only works when residents can enter, hear and contribute. This campaign covers accessible venues, portable ramps, a hearing loop, live captioning and safe transport support for six ward assemblies. Payments are tied to attendance records, supplier invoices and accessibility checks.",
+    location: "Ekurhuleni, Gauteng",
+    category: "Democracy",
+    status: "funding",
+    beneficiaryType: "civic",
+    entityRoute: "npc",
+    raisedCents: 2975000,
+    goalCents: 7500000,
+    contributorCount: 143,
+    daysRemaining: 24,
+    leader: { name: "Refilwe Molefe", organisation: "Access the Ward Coalition", verified: true },
+    image: "/images/campaigns/accessible-ward-meetings.jpg",
+    imageAlt: "Residents meet in an accessible community hall with a ramp and hearing-loop sign.",
+    accent: "purple",
+    milestones: [
+      { id: "equipment", title: "Access equipment", description: "Portable ramps, hearing loop and accessible wayfinding.", amountCents: 2400000, status: "funded" },
+      { id: "services", title: "Communication support", description: "Live captioning, sign-language support and accessible materials.", amountCents: 2100000, status: "in_progress" },
+      { id: "meetings", title: "Six ward assemblies", description: "Venue, transport support and published participation records.", amountCents: 3000000, status: "planned" }
+    ]
+  },
+  {
+    slug: "umngeni-river-restoration-watch",
+    title: "uMngeni river restoration watch",
+    summary: "Fund community water testing, river clean-ups and indigenous bank restoration.",
+    story: "Residents want credible evidence alongside practical action on a polluted stretch of the uMngeni. The campaign combines accredited water testing, six community clean-ups and indigenous planting. Results, invoices and milestone evidence will be published through CitizenX.",
+    location: "Howick, KwaZulu-Natal",
+    category: "Environment",
+    status: "funding",
+    beneficiaryType: "public_interest",
+    entityRoute: "npc",
+    raisedCents: 6120000,
+    goalCents: 14000000,
+    contributorCount: 326,
+    daysRemaining: 36,
+    leader: { name: "Sanele Zulu", organisation: "uMngeni River Watch", verified: true },
+    image: "/images/campaigns/river-restoration.jpg",
+    imageAlt: "Community volunteers collect litter and test water beside a green riverbank.",
+    accent: "saffron",
+    milestones: [
+      { id: "testing", title: "Independent water testing", description: "Baseline and follow-up samples from an accredited laboratory.", amountCents: 3800000, status: "funded" },
+      { id: "cleanups", title: "Six river clean-ups", description: "Protective equipment, collection and licensed waste removal.", amountCents: 4700000, status: "in_progress" },
+      { id: "restoration", title: "Riverbank restoration", description: "Indigenous planting, erosion control and public progress reporting.", amountCents: 5500000, status: "planned" }
     ]
   }
 ];
@@ -116,4 +196,3 @@ export function formatZar(amountCents: number): string {
     maximumFractionDigits: 0
   }).format(amountCents / 100);
 }
-

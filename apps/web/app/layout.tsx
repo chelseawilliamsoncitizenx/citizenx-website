@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     default: "CitizenX — Democracy, funded by the people",
     template: "%s · CitizenX"
   },
-  description: "Discover verified civic campaigns, contribute securely, and follow every rand through a transparent public ledger."
+  description: "Find verified civic campaigns, contribute securely, and follow every rand through a transparent public ledger."
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {

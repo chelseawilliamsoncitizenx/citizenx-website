@@ -1,31 +1,46 @@
 "use client";
 
-import type { Campaign, CampaignCategory } from "@citizenx/domain";
+import { campaignProgress, type Campaign, type CampaignCategory } from "@citizenx/domain";
 import { useMemo, useState } from "react";
 import { CampaignCard } from "../../components/campaign-card";
 
-const categories: Array<CampaignCategory | "All"> = ["All", "Community", "Education", "Youth"];
+const categories: Array<CampaignCategory | "All"> = ["All", "Community", "Democracy", "Education", "Environment", "Youth"];
+type SortOption = "recommended" | "closest" | "ending";
 
 export function DiscoverClient({ campaigns }: { campaigns: Campaign[] }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<CampaignCategory | "All">("All");
+  const [sort, setSort] = useState<SortOption>("recommended");
 
   const filtered = useMemo(() => {
     const normalised = query.trim().toLowerCase();
-    return campaigns.filter((campaign) => {
+    const matches = campaigns.filter((campaign) => {
       const matchesCategory = category === "All" || campaign.category === category;
       const matchesQuery = !normalised || [campaign.title, campaign.summary, campaign.location]
         .some((value) => value.toLowerCase().includes(normalised));
       return matchesCategory && matchesQuery;
     });
-  }, [campaigns, category, query]);
+    return [...matches].sort((a, b) => {
+      if (sort === "closest") return campaignProgress(b) - campaignProgress(a);
+      if (sort === "ending") return a.daysRemaining - b.daysRemaining;
+      return 0;
+    });
+  }, [campaigns, category, query, sort]);
 
   return (
     <div>
-      <div className="filters" role="search" aria-label="Filter campaigns">
+      <div className="filters campaign-filters" role="search" aria-label="Filter and sort campaigns">
         <div className="field search-field">
           <label htmlFor="campaign-search">Search campaigns</label>
           <input id="campaign-search" type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search by cause or location" />
+        </div>
+        <div className="field">
+          <label htmlFor="campaign-sort">Sort campaigns</label>
+          <select id="campaign-sort" value={sort} onChange={(event) => setSort(event.target.value as SortOption)}>
+            <option value="recommended">Recommended</option>
+            <option value="closest">Closest to goal</option>
+            <option value="ending">Ending soon</option>
+          </select>
         </div>
         <fieldset className="filter-chips">
           <legend>Category</legend>

@@ -1,4 +1,5 @@
 import { campaignProgress, formatZar, type Campaign } from "@citizenx/domain";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowIcon, CheckIcon } from "./icons";
 
@@ -7,11 +8,8 @@ export function CampaignCard({ campaign }: { campaign: Campaign }) {
 
   return (
     <article className="campaign-card">
-      <div className={`campaign-art campaign-art-${campaign.accent}`} aria-hidden="true">
-        <span className="art-sun" />
-        <span className="art-land art-land-back" />
-        <span className="art-land art-land-front" />
-        <span className="art-marker" />
+      <div className="campaign-art">
+        <Image src={campaign.image} alt={campaign.imageAlt} width={1536} height={1024} sizes="(max-width: 660px) calc(100vw - 28px), (max-width: 960px) 50vw, 33vw" />
       </div>
       <div className="campaign-card-body">
         <div className="campaign-meta">
@@ -39,4 +37,3 @@ export function CampaignCard({ campaign }: { campaign: Campaign }) {
     </article>
   );
 }
-

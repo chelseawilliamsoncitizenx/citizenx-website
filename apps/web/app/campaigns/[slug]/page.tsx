@@ -1,5 +1,6 @@
 import { campaignProgress, campaigns, formatZar, getCampaign } from "@citizenx/domain";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowIcon, CheckIcon, ShieldIcon } from "../../../components/icons";
@@ -25,7 +26,7 @@ export default async function CampaignPage({ params }: { params: Promise<{ slug:
       <section className="campaign-hero">
         <div className="shell">
           <nav className="breadcrumbs" aria-label="Breadcrumb">
-            <Link href="/discover/">Discover</Link><span aria-hidden="true">/</span><span aria-current="page">{campaign.title}</span>
+            <Link href="/discover/">Find a campaign</Link><span aria-hidden="true">/</span><span aria-current="page">{campaign.title}</span>
           </nav>
           <div className="campaign-hero-grid">
             <div>
@@ -36,11 +37,8 @@ export default async function CampaignPage({ params }: { params: Promise<{ slug:
               <h1>{campaign.title}</h1>
               <p className="campaign-summary">{campaign.summary}</p>
               <p className="campaign-location">{campaign.location} · {campaign.daysRemaining} days remaining</p>
-              <div className={`campaign-art campaign-art-large campaign-art-${campaign.accent}`} aria-label={`Illustration for ${campaign.title}`} role="img">
-                <span className="art-sun" />
-                <span className="art-land art-land-back" />
-                <span className="art-land art-land-front" />
-                <span className="art-marker" />
+              <div className="campaign-art campaign-art-large">
+                <Image src={campaign.image} alt={campaign.imageAlt} width={1536} height={1024} sizes="(max-width: 960px) calc(100vw - 40px), 62vw" priority />
               </div>
             </div>
             <aside className="funding-card" aria-label="Campaign funding summary">

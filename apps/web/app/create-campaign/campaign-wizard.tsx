@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { CheckIcon } from "../../components/icons";
 import { createSandboxId, keys, readSandbox, seedSandboxCampaign, type SandboxCampaign, writeSandbox } from "../../lib/sandbox-store";
 
@@ -12,6 +12,8 @@ export function CampaignWizard() {
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState<SandboxCampaign | null>(null);
   const [error, setError] = useState("");
+  const wizardBody = useRef<HTMLDivElement>(null);
+  const previousStep = useRef(step);
   const [form, setForm] = useState({
     title: "Alexandra community food garden",
     summary: "Turn an unused municipal plot into a productive garden led by local growers.",
@@ -27,6 +29,14 @@ export function CampaignWizard() {
   });
 
   const milestoneTotal = useMemo(() => form.milestones.reduce((sum, item) => sum + Number(item.amountRand || 0), 0), [form.milestones]);
+
+  useEffect(() => {
+    if (previousStep.current === step) return;
+    previousStep.current = step;
+    const legend = wizardBody.current?.querySelector<HTMLElement>("legend");
+    legend?.setAttribute("tabindex", "-1");
+    legend?.focus();
+  }, [step]);
 
   function next() {
     setError("");
@@ -49,7 +59,7 @@ export function CampaignWizard() {
   }
 
   if (submitted) return (
-    <div className="success-card">
+    <div className="success-card" role="status">
       <span className="success-icon"><CheckIcon size={36} /></span>
       <p className="eyebrow">Submitted for review</p>
       <h1>{submitted.title}</h1>
@@ -69,7 +79,7 @@ export function CampaignWizard() {
         {steps.map((label, index) => <li className={index === step ? "current" : index < step ? "complete" : ""} aria-current={index === step ? "step" : undefined} key={label}><span>{index < step ? <CheckIcon size={15} /> : index + 1}</span>{label}</li>)}
       </ol>
 
-      <div className="wizard-body">
+      <div className="wizard-body" ref={wizardBody}>
         {step === 0 ? <fieldset><legend>Tell people what you want to change.</legend><p className="field-help">Use plain, specific language. This becomes the public campaign summary.</p><div className="form-grid"><div className="field field-wide"><label htmlFor="campaign-title">Campaign title</label><input id="campaign-title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} /></div><div className="field field-wide"><label htmlFor="campaign-summary">Public summary</label><textarea id="campaign-summary" rows={4} value={form.summary} onChange={(e) => setForm({ ...form, summary: e.target.value })} /></div><div className="field"><label htmlFor="campaign-category">Category</label><select id="campaign-category" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>{categories.map((category) => <option key={category}>{category}</option>)}</select></div><div className="field"><label htmlFor="campaign-location">Location</label><input id="campaign-location" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} /></div></div></fieldset> : null}
 
         {step === 1 ? <fieldset><legend>Set a clear funding goal.</legend><p className="field-help">CitizenX will protect the campaign balance and pay approved suppliers against evidence.</p><div className="goal-field"><span>R</span><label className="sr-only" htmlFor="campaign-goal">Funding goal in rand</label><input id="campaign-goal" type="number" min="1000" step="500" value={form.goalRand} onChange={(e) => setForm({ ...form, goalRand: Number(e.target.value) })} /></div><div className="info-panel"><strong>No unrestricted cash release</strong><p>Campaign funds remain traceable and are released to verified suppliers for approved milestones.</p></div></fieldset> : null}

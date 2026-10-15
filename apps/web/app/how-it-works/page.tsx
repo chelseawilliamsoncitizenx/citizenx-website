@@ -14,9 +14,8 @@ export default function HowItWorksPage() {
         <li><span>02</span><div><p className="eyebrow">Raise</p><h2>Make the plan visible before asking for support.</h2><p>Campaigns publish a goal, a budget and evidence-based milestones so contributors can understand what their funding is intended to achieve.</p></div></li>
         <li><span>03</span><div><p className="eyebrow">Protect</p><h2>Keep campaign funds separate and controlled.</h2><p>Contributions enter a protected campaign balance. Approved suppliers are paid against invoices and milestones instead of unrestricted cash being released.</p></div></li>
         <li><span>04</span><div><p className="eyebrow">Account</p><h2>Let every supporter follow the trail.</h2><p>Privacy-safe ledger activity, delivery evidence and campaign updates create a durable public record of progress.</p></div></li>
-      </ol><div className="center-cta"><Link className="button button-primary" href="/discover/">Discover verified campaigns <ArrowIcon /></Link></div></div></section>
+      </ol><div className="center-cta"><Link className="button button-primary" href="/discover/">Find a verified campaign <ArrowIcon /></Link></div></div></section>
       <TrustStrip />
     </>
   );
 }
-

@@ -2,7 +2,7 @@
 
 import { formatZar, type Campaign } from "@citizenx/domain";
 import Link from "next/link";
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowIcon, CheckIcon, ShieldIcon } from "../../../components/icons";
 
 type Visibility = "initials" | "anonymous";
@@ -22,12 +22,22 @@ export function DonationFlow({ campaign }: { campaign: Campaign }) {
   const [tipPercent, setTipPercent] = useState(0);
   const [receipt, setReceipt] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const flowPanel = useRef<HTMLFormElement>(null);
+  const previousStep = useRef(step);
 
   const donationAmount = customAmount ? Math.max(0, Math.round(Number(customAmount) * 100)) : amountCents;
   const tipCents = Math.round(donationAmount * tipPercent / 100);
   const totalCents = donationAmount + tipCents;
   const canContinue = Number.isInteger(donationAmount) && donationAmount >= 2000;
   const currency = useMemo(() => formatZar(donationAmount), [donationAmount]);
+
+  useEffect(() => {
+    if (previousStep.current === step) return;
+    previousStep.current = step;
+    const legend = flowPanel.current?.querySelector<HTMLElement>("legend");
+    legend?.setAttribute("tabindex", "-1");
+    legend?.focus();
+  }, [step]);
 
   function chooseAmount(value: number) {
     setAmountCents(value);
@@ -91,7 +101,7 @@ export function DonationFlow({ campaign }: { campaign: Campaign }) {
               return <li key={label} className={number === step ? "current" : number < step ? "complete" : ""} aria-current={number === step ? "step" : undefined}><span>{number < step ? <CheckIcon size={15} /> : number}</span>{label}</li>;
             })}
           </ol>
-          <form className="donation-form" onSubmit={submit}>
+          <form className="donation-form" onSubmit={submit} ref={flowPanel}>
             {step === 1 ? (
               <fieldset>
                 <legend>Choose your contribution</legend>
@@ -99,7 +109,7 @@ export function DonationFlow({ campaign }: { campaign: Campaign }) {
                 <div className="amount-grid">
                   {amountOptions.map((amount) => <button type="button" key={amount} className={!customAmount && amount === amountCents ? "selected" : ""} aria-pressed={!customAmount && amount === amountCents} onClick={() => chooseAmount(amount)}>{formatZar(amount)}</button>)}
                 </div>
-                <div className="field amount-field"><label htmlFor="custom-amount">Or enter another amount</label><span>R</span><input id="custom-amount" inputMode="decimal" min="20" step="1" type="number" value={customAmount} onChange={(event) => setCustomAmount(event.target.value)} placeholder="Other amount" aria-describedby="amount-error" /></div>
+                <div className="field amount-field"><label htmlFor="custom-amount">Or enter another amount</label><span>R</span><input id="custom-amount" inputMode="decimal" min="20" step="1" type="number" value={customAmount} onChange={(event) => setCustomAmount(event.target.value)} placeholder="Other amount" aria-describedby={!canContinue ? "amount-error" : undefined} aria-invalid={!canContinue} /></div>
                 {!canContinue ? <p className="field-error" id="amount-error">Enter an amount of at least R20.</p> : null}
                 <button className="button button-primary button-wide" type="button" disabled={!canContinue} onClick={() => setStep(2)}>Continue with {currency} <ArrowIcon /></button>
               </fieldset>

@@ -6,7 +6,7 @@ import { keys, readSandbox, roleLabels, seedSandboxCampaign, type SandboxAdvert,
 
 const roleActions: Record<SandboxRole, Array<{ title: string; copy: string; href: string; cta: string }>> = {
   citizen: [
-    { title: "Discover verified campaigns", copy: "Find a cause, contribute with sandbox money and follow its ledger.", href: "/discover/", cta: "Browse campaigns" },
+    { title: "Find a verified campaign", copy: "Find a cause, contribute with sandbox money and follow its ledger.", href: "/discover/", cta: "Browse campaigns" },
     { title: "Explore trusted suppliers", copy: "See verification, ratings, reviews and clearly labelled promotions.", href: "/suppliers/", cta: "View suppliers" }
   ],
   campaign_creator: [
@@ -58,7 +58,7 @@ export function SandboxHub() {
         <p className="eyebrow">Current persona</p>
         <h2 id="persona-title">{roleLabels[role]}</h2>
         <p>Choose a role to reveal the actions available to that participant.</p>
-        <div className="persona-list" role="list" aria-label="Sandbox personas">
+        <div className="persona-list">
           {(Object.entries(roleLabels) as Array<[SandboxRole, string]>).map(([value, label]) => (
             <button type="button" className={value === role ? "active" : ""} onClick={() => switchRole(value)} aria-pressed={value === role} key={value}>
               <span className="persona-dot" aria-hidden="true" />{label}

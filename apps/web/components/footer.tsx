@@ -11,11 +11,14 @@ export function Footer() {
           <p className="footer-note">Pilot experience · No real payments are processed.</p>
         </div>
         <nav aria-label="Footer navigation">
-          <Link href="/discover/">Discover campaigns</Link>
+          <Link href="/">Home</Link>
+          <Link href="/discover/">Find a campaign</Link>
           <Link href="/suppliers/">Verified suppliers</Link>
+          <Link href="/create-campaign/">Start a campaign</Link>
           <Link href="/sandbox/">Sandbox workspace</Link>
           <Link href="/how-it-works/">How it works</Link>
           <Link href="/about/">About CitizenX</Link>
+          <Link href="/accessibility/">Accessibility</Link>
           <a href="https://www.citizenx.fund/">Founding network</a>
         </nav>
         <div>
