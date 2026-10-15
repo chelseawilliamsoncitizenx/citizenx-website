@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FeatureIcon, type FeatureIconName } from "../../components/icons";
-import { keys, readSandbox, roleLabels, seedSandboxCampaign, seedSupplierApplication, type SandboxAdvert, type SandboxAssignment, type SandboxCampaign, type SandboxRole, type SandboxSupplierApplication, writeSandbox } from "../../lib/sandbox-store";
+import { keys, readSandbox, roleLabels, seedSandboxAssignment, seedSandboxCampaign, seedSupplierApplication, type SandboxAdvert, type SandboxAssignment, type SandboxCampaign, type SandboxRole, type SandboxSupplierApplication, writeSandbox } from "../../lib/sandbox-store";
 
 const roleActions: Record<SandboxRole, Array<{ title: string; copy: string; href: string; cta: string; icon: FeatureIconName }>> = {
   citizen: [
@@ -19,8 +19,8 @@ const roleActions: Record<SandboxRole, Array<{ title: string; copy: string; href
     { title: "Promote your services", copy: "Buy a clearly labelled 7- or 30-day sponsored placement with a sandbox payment.", href: "/suppliers/promote/", cta: "Create an advert", icon: "megaphone" }
   ],
   admin: [
-    { title: "Review campaign submissions", copy: "Approve a campaign or request changes with an auditable decision.", href: "/admin/review/", cta: "Review campaigns", icon: "campaign" },
-    { title: "Approve supplier applications", copy: "Check registration, authorised contacts and service evidence before approval.", href: "/admin/suppliers/", cta: "Review suppliers", icon: "supplier" }
+    { title: "Open the admin control centre", copy: "See campaign, supplier and payment queues together with the named admin team.", href: "/admin/", cta: "View admin controls", icon: "shield" },
+    { title: "Release supplier payments", copy: "Check milestone evidence and invoice details before approving a sandbox payment.", href: "/admin/payments/", cta: "Review payments", icon: "account" }
   ]
 };
 
@@ -28,7 +28,7 @@ const roleDescriptions: Record<SandboxRole, string> = {
   citizen: "Discover causes, contribute safely and inspect the public evidence trail.",
   campaign_creator: "Build a transparent proposal, appoint verified suppliers and report delivery.",
   supplier: "Apply for verification, promote services transparently and build a rated track record.",
-  admin: "Protect trust by approving campaigns and suppliers through separate review queues."
+  admin: "Protect trust by approving campaigns, verifying suppliers and controlling milestone payments."
 };
 
 const roleIcons: Record<SandboxRole, FeatureIconName> = {
@@ -47,7 +47,7 @@ export function SandboxHub() {
     setCounts({
       campaigns: readSandbox<SandboxCampaign[]>(keys.campaigns, [seedSandboxCampaign]).length,
       applications: readSandbox<SandboxSupplierApplication[]>(keys.supplierApplications, [seedSupplierApplication]).length,
-      assignments: readSandbox<SandboxAssignment[]>(keys.assignments, []).length,
+      assignments: readSandbox<SandboxAssignment[]>(keys.assignments, [seedSandboxAssignment]).length,
       adverts: readSandbox<SandboxAdvert[]>(keys.adverts, []).length
     });
   }
@@ -90,7 +90,7 @@ export function SandboxHub() {
         <div className={`role-banner role-banner-${role}`} role="status" aria-live="polite">
           <span className="role-banner-icon" aria-hidden="true"><FeatureIcon name={roleIcons[role]} size={30} /></span>
           <div><p>You are viewing CitizenX as</p><h2>{roleLabels[role]}</h2><span>{roleDescriptions[role]}</span></div>
-          {role === "admin" ? <div className="role-banner-links"><Link href="/admin/review/">Campaign approvals</Link><Link href="/admin/suppliers/">Supplier approvals</Link></div> : null}
+          {role === "admin" ? <div className="role-banner-links"><Link href="/admin/">Control centre</Link><Link href="/admin/review/">Campaigns</Link><Link href="/admin/suppliers/">Suppliers</Link><Link href="/admin/payments/">Payments</Link></div> : null}
         </div>
         <div className="workspace-summary">
           <div><span>Campaigns</span><strong>{counts.campaigns}</strong></div>
@@ -111,7 +111,7 @@ export function SandboxHub() {
         </div>
         <div className="sandbox-explainer">
           <strong>How to test the connected flow</strong>
-          <p>Create a campaign as a Campaign Creator, approve it as Admin, assign a verified supplier, mark the job complete and leave a verified review. Each action is stored only in this browser.</p>
+          <p>Create a campaign as a Campaign Creator, approve it as Admin, assign a verified supplier, submit completion evidence, approve the supplier payment as Admin and then leave a verified review. Each action is stored only in this browser.</p>
         </div>
       </div>
     </div>

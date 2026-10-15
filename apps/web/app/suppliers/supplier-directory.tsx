@@ -4,7 +4,7 @@ import { supplierCategories, type Supplier, type SupplierCategory } from "@citiz
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { CheckIcon, StarIcon } from "../../components/icons";
-import { createSandboxId, keys, readSandbox, seedSandboxCampaign, type SandboxAdvert, type SandboxAssignment, type SandboxCampaign, type SandboxReview, type SandboxRole, writeSandbox } from "../../lib/sandbox-store";
+import { createSandboxId, keys, readSandbox, seedSandboxAssignment, seedSandboxCampaign, type SandboxAdvert, type SandboxAssignment, type SandboxCampaign, type SandboxReview, type SandboxRole, writeSandbox } from "../../lib/sandbox-store";
 
 type CategoryFilter = SupplierCategory | "All";
 type RatingFilter = "all" | "4" | "4.5" | "4.8";
@@ -33,7 +33,7 @@ export function SupplierDirectory({ suppliers }: { suppliers: Supplier[] }) {
   function refresh() {
     setRole(readSandbox<SandboxRole>(keys.role, "citizen"));
     setAdverts(readSandbox<SandboxAdvert[]>(keys.adverts, []));
-    setAssignments(readSandbox<SandboxAssignment[]>(keys.assignments, []));
+    setAssignments(readSandbox<SandboxAssignment[]>(keys.assignments, [seedSandboxAssignment]));
     setReviews(readSandbox<SandboxReview[]>(keys.reviews, []));
   }
   useEffect(() => {
@@ -91,13 +91,22 @@ export function SupplierDirectory({ suppliers }: { suppliers: Supplier[] }) {
 
   function confirmAssignment() {
     if (!activeSupplier) return;
-    const assignment: SandboxAssignment = { id: createSandboxId("job"), supplierSlug: activeSupplier.slug, supplierName: activeSupplier.name, milestone, amountRand, status: "assigned" };
+    const assignment: SandboxAssignment = { id: createSandboxId("job"), supplierSlug: activeSupplier.slug, supplierName: activeSupplier.name, campaignId: campaign.id, campaignTitle: campaign.title, milestone, amountRand, status: "assigned" };
     const next = [assignment, ...assignments.filter((item) => item.supplierSlug !== activeSupplier.slug)];
     setAssignments(next); writeSandbox(keys.assignments, next); setActiveSupplier(null);
   }
 
-  function completeAssignment(assignment: SandboxAssignment) {
-    const next = assignments.map((item) => item.id === assignment.id ? { ...item, status: "completed" as const } : item);
+  function submitCompletionEvidence(assignment: SandboxAssignment) {
+    const next = assignments.map((item): SandboxAssignment => {
+      if (item.id !== assignment.id) return item;
+      const { paymentApprovedBy: _approvedBy, paymentApprovedAt: _approvedAt, paymentReference: _reference, paymentDecisionNote: _note, ...rest } = item;
+      return {
+        ...rest,
+        status: "completion_submitted",
+        evidenceNote: "Campaign creator submitted completion photos, handover confirmation and milestone notes in the sandbox.",
+        invoiceReference: item.invoiceReference ?? `INV-SBX-${item.id.slice(-5).toUpperCase()}`
+      };
+    });
     setAssignments(next); writeSandbox(keys.assignments, next);
   }
 
@@ -130,7 +139,7 @@ export function SupplierDirectory({ suppliers }: { suppliers: Supplier[] }) {
           <div className="supplier-rating"><Stars rating={rating} /><strong>{rating.toFixed(1)}</strong><span>{supplier.completedJobs + sandboxReviews.length} completed jobs · {allReviews.length} public {allReviews.length === 1 ? "review" : "reviews"}</span></div>
           <ul className="service-tags">{supplier.services.map((service) => <li key={service}>{service}</li>)}</ul>
           <p className="response-time">{supplier.responseTime}</p>
-          {assignment ? <div className={`assignment-status assignment-${assignment.status}`}><strong>{assignment.milestone}</strong><span>{assignment.status === "assigned" ? `Assigned · R${assignment.amountRand.toLocaleString("en-ZA")}` : assignment.status === "completed" ? "Completed and paid · review unlocked" : "Completed · verified review published"}</span>{assignment.status === "assigned" ? <button type="button" className="button button-small button-primary" onClick={() => completeAssignment(assignment)}>Mark complete &amp; pay</button> : null}{assignment.status === "completed" ? <button type="button" className="button button-small button-primary" onClick={() => setReviewing(assignment)}>Leave verified review</button> : null}</div> : <button type="button" className="button button-secondary button-wide" onClick={() => beginAssignment(supplier)}>Assign to a milestone</button>}
+          {assignment ? <div className={`assignment-status assignment-${assignment.status}`}><strong>{assignment.milestone}</strong><span>{assignment.status === "assigned" ? `Assigned · R${assignment.amountRand.toLocaleString("en-ZA")}` : assignment.status === "completion_submitted" || assignment.status === "completed" ? "Completion evidence submitted · awaiting admin payment approval" : assignment.status === "evidence_requested" ? "Admin requested more evidence before payment" : assignment.status === "paid" ? `Sandbox payment released${assignment.paymentReference ? ` · ${assignment.paymentReference}` : ""} · review unlocked` : "Completed · verified review published"}</span>{assignment.status === "assigned" || assignment.status === "evidence_requested" ? <button type="button" className="button button-small button-primary" onClick={() => submitCompletionEvidence(assignment)}>{assignment.status === "evidence_requested" ? "Resubmit completion evidence" : "Submit completion evidence"}</button> : null}{assignment.status === "paid" ? <button type="button" className="button button-small button-primary" onClick={() => setReviewing(assignment)}>Leave verified review</button> : null}</div> : <button type="button" className="button button-secondary button-wide" onClick={() => beginAssignment(supplier)}>Assign to a milestone</button>}
           <details className="supplier-reviews"><summary>Read reviews ({allReviews.length})</summary>{allReviews.length ? <div>{allReviews.map((review) => <blockquote key={review.id}><div><Stars rating={review.rating} /><span><CheckIcon size={13} /> Verified engagement</span></div><p>“{review.text}”</p><footer>{review.author} · {review.campaign} · {review.date}</footer></blockquote>)}</div> : <p>No reviews yet. Be the first campaign creator to complete a verified job.</p>}</details>
         </article>;
       })}</div> : <div className="empty-state"><h2>No suppliers match those filters.</h2><p>Try a lower rating, another category or a broader search.</p></div>}

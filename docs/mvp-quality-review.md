@@ -17,10 +17,13 @@ Reviewed: 15 October 2026
 - Moved essential journeys into the main header and added keyboard-accessible secondary navigation.
 - Made the header and sandbox role-aware, with distinct Citizen, Campaign Creator, Supplier and Admin tools.
 - Split Admin work into campaign and supplier approval queues, each with sandbox decisions and a founding-team reviewer trail.
+- Added an Admin control centre with the four authorised administrators: Patrick Schofield, Chelsea Williamson, Lindo Mathenjwa and Thatoyaona Harris.
+- Corrected the supplier workflow so campaign creators submit completion evidence and an Admin separately approves or declines the sandbox payment before a verified review unlocks.
+- Added a dedicated supplier-payment queue with campaign, milestone, evidence, invoice, approver, decision note and payment-reference context.
 
 ## Accessibility verification
 
-The implementation targets WCAG 2.2 Level AA. Axe-core 4.13.0 was run with the `wcag2a`, `wcag2aa`, `wcag21aa` and `wcag22aa` tags against 15 representative routes:
+The implementation targets WCAG 2.2 Level AA. Axe-core 4.13.0 was run with the `wcag2a`, `wcag2aa`, `wcag21aa` and `wcag22aa` tags against 17 representative routes. The six admin and supplier routes were rerun after the payment-control work:
 
 - Home
 - Find a campaign
@@ -31,6 +34,8 @@ The implementation targets WCAG 2.2 Level AA. Axe-core 4.13.0 was run with the `
 - Campaign creator
 - Admin review
 - Supplier approval
+- Admin control centre
+- Supplier payment approval
 - Verified suppliers
 - Supplier registration
 - Supplier promotion
@@ -46,15 +51,26 @@ Automated testing cannot establish full conformance on its own. Before a public 
 
 ## Critical product assessment
 
-The MVP now tells a coherent story from discovery to contribution, campaign creation, founding-team approval, supplier selection, milestone completion, review and public ledger. Its strongest differentiator is not crowdfunding alone; it is controlled disbursement with visible evidence and supplier accountability.
+The MVP now tells a coherent story from discovery to contribution, campaign creation, founding-team approval, supplier selection, milestone completion, admin-controlled payment, review and public ledger. Its strongest differentiator is not crowdfunding alone; it is controlled disbursement with visible evidence and supplier accountability.
 
 The largest remaining risks are outside the static pilot:
 
 1. Browser-local state is useful for demos but cannot support shared review queues, durable records or multi-user collaboration.
 2. Verification, payments and protected balances are simulated. Production providers, failure states and reconciliation rules need end-to-end design.
-3. Supplier approval and review moderation need auditable policies, appeals and conflict-of-interest controls.
+3. Supplier approval, payment exceptions and review moderation need auditable policies, appeals and conflict-of-interest controls.
 4. Campaign eligibility needs explicit rules for political neutrality, public-interest claims, prohibited content and evidence quality.
 5. The public ledger needs a privacy model covering redaction, retention, corrections and POPIA responsibilities.
 6. Sponsored suppliers need frequency limits and ranking rules so paid placement never weakens trust in the directory.
 
 These are the recommended gates for moving from a strong interactive pilot to a production MVP.
+
+## Recommended production admin controls
+
+The pilot now makes campaign approval, supplier verification and evidence-backed payment approval usable. Before real transactions, the admin system should also include:
+
+1. Role-based access, least privilege and two-person approval for high-risk payments.
+2. Payment holds, failed-payment recovery, disputes, refunds and escalation ownership.
+3. Provider reconciliation, immutable audit history and exportable finance reports.
+4. Campaign, advert and review moderation with documented appeals and conflict declarations.
+5. Privacy redaction, data-subject requests and retention controls aligned to CitizenX's POPIA responsibilities.
+6. Sponsored-placement approval, frequency limits and clear separation from supplier verification and organic ranking.

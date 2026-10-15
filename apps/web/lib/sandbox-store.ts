@@ -1,5 +1,12 @@
 export type SandboxRole = "citizen" | "campaign_creator" | "supplier" | "admin";
 
+export const sandboxAdmins = [
+  { name: "Patrick Schofield", email: "patrick@citizenx.fund" },
+  { name: "Chelsea Williamson", email: "chelsea@citizenx.fund" },
+  { name: "Lindo Mathenjwa", email: "lindo@citizenx.fund" },
+  { name: "Thatoyaona Harris", email: "thatoyaona@citizenx.fund" }
+] as const;
+
 export interface SandboxCampaign {
   id: string;
   title: string;
@@ -30,9 +37,17 @@ export interface SandboxAssignment {
   id: string;
   supplierSlug: string;
   supplierName: string;
+  campaignId?: string;
+  campaignTitle?: string;
   milestone: string;
   amountRand: number;
-  status: "assigned" | "completed" | "reviewed";
+  status: "assigned" | "completion_submitted" | "evidence_requested" | "paid" | "reviewed" | "completed";
+  evidenceNote?: string;
+  invoiceReference?: string;
+  paymentApprovedBy?: string;
+  paymentApprovedAt?: string;
+  paymentReference?: string;
+  paymentDecisionNote?: string;
 }
 
 export interface SandboxReview {
@@ -118,4 +133,17 @@ export const seedSupplierApplication: SandboxSupplierApplication = {
   contactName: "Naledi Mokoena",
   submittedAt: "2026-10-14T11:30:00.000Z",
   status: "under_verification"
+};
+
+export const seedSandboxAssignment: SandboxAssignment = {
+  id: "job-seed-library-print",
+  supplierSlug: "imbizo-printworks",
+  supplierName: "Imbizo Printworks",
+  campaignId: "school-library-rebuild",
+  campaignTitle: "School library rebuild",
+  milestone: "Print multilingual reading packs",
+  amountRand: 18400,
+  status: "completion_submitted",
+  evidenceNote: "Final print proof, delivery note and school receipt uploaded for the sandbox review.",
+  invoiceReference: "INV-SBX-1042"
 };

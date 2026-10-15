@@ -50,12 +50,13 @@ const roleTools: Record<SandboxRole, { label: string; description: string; items
     ]
   },
   admin: {
-    label: "Admin approvals",
-    description: "Review the trust decisions that protect the platform.",
+    label: "Admin controls",
+    description: "Review trust decisions and controlled disbursements.",
     items: [
+      { href: "/admin/", label: "Admin control centre", description: "See all queues, admins and oversight controls.", icon: "shield" },
       { href: "/admin/review/", label: "Campaign approvals", description: "Approve campaigns or request changes.", icon: "campaign" },
       { href: "/admin/suppliers/", label: "Supplier approvals", description: "Verify suppliers before directory access.", icon: "supplier" },
-      { href: "/sandbox/", label: "Admin workspace", description: "See queues and audit activity together.", icon: "shield" }
+      { href: "/admin/payments/", label: "Supplier payments", description: "Approve evidence-backed milestone payments.", icon: "account" }
     ]
   }
 };
