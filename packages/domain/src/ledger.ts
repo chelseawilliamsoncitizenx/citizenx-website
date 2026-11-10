@@ -24,6 +24,20 @@ export interface PublicLedgerEvent {
   amountCents: number;
   kind: "in" | "out" | "held";
   verified: boolean;
+  reference?: string;
+  recordType?: "individual" | "aggregate" | "supplier_payment" | "allocation";
+  status?: "settled" | "paid" | "held" | "refunded";
+  paymentMethod?: string;
+  milestone?: string;
+  invoiceReference?: string;
+  vatTreatment?: string;
+  supplierVerification?: string;
+  approver?: string;
+  procurementMethod?: string;
+  conflictDeclaration?: string;
+  paymentReference?: string;
+  evidenceHref?: string;
+  evidenceLabel?: string;
 }
 
 export function isBalanced(transaction: LedgerTransaction): boolean {
@@ -60,11 +74,25 @@ export function createDonationTransaction(input: {
 }
 
 export const publicLedgerEvents: PublicLedgerEvent[] = [
-  { id: "evt-5", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-10-14T09:30:00+02:00", label: "Community contributions", detail: "43 named and anonymous donations settled", amountCents: 870000, kind: "in", verified: true },
-  { id: "evt-4", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-10-11T14:12:00+02:00", label: "Sipho's Plumbing", detail: "Verified invoice #0431 · plumbing milestone", amountCents: 4100000, kind: "out", verified: true },
-  { id: "evt-3", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-10-08T11:05:00+02:00", label: "JoJo Tanks SA", detail: "Verified invoice #0432 · storage tank", amountCents: 2850000, kind: "out", verified: true },
-  { id: "evt-2", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-10-05T16:44:00+02:00", label: "Installation allocation", detail: "Protected pending proof of service", amountCents: 1470000, kind: "held", verified: true },
-  { id: "evt-1", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-10-01T08:20:00+02:00", label: "Community contributions", detail: "369 named and anonymous donations settled", amountCents: 7550000, kind: "in", verified: true },
+  { id: "clinic-in-16", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-11-07T16:20:00+02:00", label: "Nandi Mkhize", detail: "Individual contribution", amountCents: 250000, kind: "in", verified: true, reference: "CX-IN-10416", recordType: "individual", status: "settled", paymentMethod: "Instant EFT" },
+  { id: "clinic-in-15", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-11-06T10:45:00+02:00", label: "Kabelo Molefe", detail: "Individual contribution", amountCents: 100000, kind: "in", verified: true, reference: "CX-IN-10415", recordType: "individual", status: "settled", paymentMethod: "Card" },
+  { id: "clinic-in-14", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-11-05T14:10:00+02:00", label: "Anonymous supporter", detail: "Individual contribution · public identity hidden", amountCents: 75000, kind: "in", verified: true, reference: "CX-IN-10414", recordType: "individual", status: "settled", paymentMethod: "Instant EFT" },
+  { id: "clinic-in-13", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-11-04T09:35:00+02:00", label: "Ayesha Petersen", detail: "Individual contribution", amountCents: 50000, kind: "in", verified: true, reference: "CX-IN-10413", recordType: "individual", status: "settled", paymentMethod: "Card" },
+  { id: "clinic-in-12", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-11-03T17:25:00+02:00", label: "Sibusiso Nxumalo", detail: "Individual contribution", amountCents: 35000, kind: "in", verified: true, reference: "CX-IN-10412", recordType: "individual", status: "settled", paymentMethod: "Card" },
+  { id: "clinic-in-11", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-11-02T08:50:00+02:00", label: "Lerato Khumalo", detail: "Individual contribution", amountCents: 20000, kind: "in", verified: true, reference: "CX-IN-10411", recordType: "individual", status: "settled", paymentMethod: "Instant EFT" },
+  { id: "clinic-in-10", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-10-31T12:15:00+02:00", label: "Anonymous supporter", detail: "Individual contribution · public identity hidden", amountCents: 125000, kind: "in", verified: true, reference: "CX-IN-10410", recordType: "individual", status: "settled", paymentMethod: "Instant EFT" },
+  { id: "clinic-in-9", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-10-29T15:40:00+02:00", label: "Zanele Dube", detail: "Individual contribution", amountCents: 300000, kind: "in", verified: true, reference: "CX-IN-10409", recordType: "individual", status: "settled", paymentMethod: "Card" },
+  { id: "clinic-in-8", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-10-27T11:05:00+02:00", label: "Michael Botha", detail: "Individual contribution", amountCents: 150000, kind: "in", verified: true, reference: "CX-IN-10408", recordType: "individual", status: "settled", paymentMethod: "Instant EFT" },
+  { id: "clinic-in-7", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-10-24T18:30:00+02:00", label: "Refilwe Mokgosi", detail: "Individual contribution", amountCents: 90000, kind: "in", verified: true, reference: "CX-IN-10407", recordType: "individual", status: "settled", paymentMethod: "Card" },
+  { id: "clinic-in-6", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-10-22T09:15:00+02:00", label: "Anonymous supporter", detail: "Individual contribution · public identity hidden", amountCents: 45000, kind: "in", verified: true, reference: "CX-IN-10406", recordType: "individual", status: "settled", paymentMethod: "Instant EFT" },
+  { id: "clinic-in-5", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-10-20T13:00:00+02:00", label: "Rethabile Nkosi", detail: "Individual contribution", amountCents: 60000, kind: "in", verified: true, reference: "CX-IN-10405", recordType: "individual", status: "settled", paymentMethod: "Card" },
+  { id: "clinic-in-4", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-10-18T10:20:00+02:00", label: "Priya Naidoo", detail: "Individual contribution", amountCents: 320000, kind: "in", verified: true, reference: "CX-IN-10404", recordType: "individual", status: "settled", paymentMethod: "Instant EFT" },
+  { id: "clinic-in-3", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-10-16T16:05:00+02:00", label: "Themba Ndlovu", detail: "Individual contribution", amountCents: 200000, kind: "in", verified: true, reference: "CX-IN-10403", recordType: "individual", status: "settled", paymentMethod: "Card" },
+  { id: "clinic-in-2", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-10-12T12:00:00+02:00", label: "Community fun walk settlement", detail: "186 contributions settled as one collection deposit", amountCents: 3200000, kind: "in", verified: true, reference: "CX-IN-BATCH-02", recordType: "aggregate", status: "settled", paymentMethod: "Collection deposit" },
+  { id: "clinic-in-1", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-10-01T08:20:00+02:00", label: "Clinic open-day collection", detail: "212 contributions settled as one collection deposit", amountCents: 3400000, kind: "in", verified: true, reference: "CX-IN-BATCH-01", recordType: "aggregate", status: "settled", paymentMethod: "Collection deposit" },
+  { id: "evt-4", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-10-11T14:12:00+02:00", label: "Sipho's Plumbing", detail: "Connection, valves and pressure testing completed", amountCents: 4100000, kind: "out", verified: true, reference: "CX-EXP-00431", recordType: "supplier_payment", status: "paid", milestone: "Plumbing works", invoiceReference: "INV-0431", vatTreatment: "VAT-inclusive invoice · 15% demo rate", supplierVerification: "CitizenX verified · CSD MAAA0109842 (demo)", approver: "Patrick Schofield · Admin", procurementMethod: "Three comparable quotes reviewed", conflictDeclaration: "No conflict declared", paymentReference: "CX-PAY-8214", evidenceHref: "/campaigns/ward-12-clinic-water-tank/#updates", evidenceLabel: "View milestone evidence" },
+  { id: "evt-3", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-10-08T11:05:00+02:00", label: "JoJo Tanks SA", detail: "10,000 litre storage tank supplied and delivered", amountCents: 2850000, kind: "out", verified: true, reference: "CX-EXP-00432", recordType: "supplier_payment", status: "paid", milestone: "Storage tank", invoiceReference: "INV-0432", vatTreatment: "VAT-inclusive invoice · 15% demo rate", supplierVerification: "CitizenX verified · CSD MAAA0117630 (demo)", approver: "Chelsea Williamson · Admin", procurementMethod: "Approved supplier quote", conflictDeclaration: "No conflict declared", paymentReference: "CX-PAY-8198", evidenceHref: "/campaigns/ward-12-clinic-water-tank/#updates", evidenceLabel: "View delivery evidence" },
+  { id: "evt-2", campaignSlug: "ward-12-clinic-water-tank", occurredAt: "2026-10-05T16:44:00+02:00", label: "Installation allocation", detail: "Protected pending proof of service", amountCents: 1470000, kind: "held", verified: true, reference: "CX-COM-0021", recordType: "allocation", status: "held", milestone: "Installation and proof", approver: "Lindo Mathenjwa · Admin", procurementMethod: "Budget allocation approved", conflictDeclaration: "No conflict declared", evidenceHref: "/campaigns/ward-12-clinic-water-tank/#updates", evidenceLabel: "Review campaign updates" },
   { id: "library-income", campaignSlug: "school-library-rebuild", occurredAt: "2026-11-02T09:00:00+02:00", label: "Campaign contributions", detail: "287 named and anonymous donations settled", amountCents: 5290000, kind: "in", verified: true },
   { id: "library-expense", campaignSlug: "school-library-rebuild", occurredAt: "2026-10-26T12:20:00+02:00", label: "Sisonke Build Projects", detail: "Verified invoice #LIB-018 · room repairs", amountCents: 2800000, kind: "out", verified: true },
   { id: "library-held", campaignSlug: "school-library-rebuild", occurredAt: "2026-10-29T15:10:00+02:00", label: "Shelving allocation", detail: "Protected pending installation evidence", amountCents: 2490000, kind: "held", verified: true },

@@ -6,6 +6,7 @@ export interface SandboxDonation {
   campaignSlug: string;
   amountCents: number;
   tipCents: number;
+  tipPercent: number;
   occurredAt: string;
   visibility: DonationVisibility;
   method: DonationPaymentMethod;
@@ -24,6 +25,7 @@ export function readSandboxDonations(): SandboxDonation[] {
       campaignSlug: item.campaignSlug as string,
       amountCents: item.amountCents as number,
       tipCents: typeof item.tipCents === "number" ? item.tipCents : 0,
+      tipPercent: typeof item.tipPercent === "number" ? item.tipPercent : 0,
       occurredAt: typeof item.occurredAt === "string" ? item.occurredAt : new Date().toISOString(),
       visibility: item.visibility === "anonymous" ? "anonymous" : "public",
       method: item.method === "card" ? "card" : "instant_eft",

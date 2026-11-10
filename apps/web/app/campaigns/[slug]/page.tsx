@@ -54,7 +54,7 @@ export default async function CampaignPage({ params }: { params: Promise<{ slug:
               </div>
               <div className="campaign-stats"><strong>{progress}% raised</strong><span>{campaign.contributorCount} contributors</span></div>
               <Link className="button button-primary button-wide" href={`/donate/${campaign.slug}/`}>Contribute securely <ArrowIcon /></Link>
-              <Link className="button button-secondary button-wide" href={`/ledger/${campaign.slug}/`}>View the public ledger</Link>
+              <Link className="button button-secondary button-wide" href={`/ledger/${campaign.slug}/?view=income`}>View the public ledger</Link>
               <div className="funding-quick-facts"><span><strong>{updates.length}</strong> progress updates</span><span><strong>{campaign.milestones.length}</strong> controlled milestones</span></div>
               <div className="protected-note"><ShieldIcon /><p><strong>Your contribution is protected.</strong><br />Funds are released to verified suppliers against approved evidence.</p></div>
             </aside>
@@ -62,7 +62,7 @@ export default async function CampaignPage({ params }: { params: Promise<{ slug:
         </div>
       </section>
 
-      <nav className="campaign-section-nav" aria-label="Campaign page sections"><div className="shell"><a href="#story">Story</a><a href="#milestones">Milestones</a><a href="#updates">Updates</a><a href="#supporters">Supporters</a><Link href={`/ledger/${campaign.slug}/`}>Income &amp; expense audit</Link></div></nav>
+      <nav className="campaign-section-nav" aria-label="Campaign page sections"><div className="shell"><a href="#story">Story</a><a href="#milestones">Milestones</a><a href="#updates">Updates</a><a href="#supporters">Supporters</a><Link href={`/ledger/${campaign.slug}/?view=income`}>Income audit trail</Link><Link href={`/ledger/${campaign.slug}/?view=expenses`}>Expense audit trail</Link></div></nav>
 
       <section className="section section-ivory" id="story">
         <div className="shell detail-grid">
