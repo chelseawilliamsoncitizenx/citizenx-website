@@ -19,7 +19,7 @@ export default function HomePage() {
               <Link className="button button-primary" href="/discover/">Find a campaign <ArrowIcon /></Link>
               <Link className="button button-ghost" href="/how-it-works/">See how funds are protected</Link>
             </div>
-            <p className="pilot-note"><span>Sandbox pilot</span> No real money or identity data is collected.</p>
+            <p className="pilot-note"><span>QA pilot</span> Use demo information only. No real payments are processed.</p>
           </div>
           <LedgerPreview />
         </div>

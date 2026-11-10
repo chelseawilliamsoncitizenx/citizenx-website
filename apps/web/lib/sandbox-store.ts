@@ -72,13 +72,25 @@ export interface SandboxAdvert {
   status: "active";
 }
 
+export interface SandboxCampaignUpdate {
+  id: string;
+  campaignSlug: string;
+  title: string;
+  body: string;
+  author: string;
+  createdAt: string;
+  photoDataUrl?: string;
+  photoAlt?: string;
+}
+
 export const keys = {
   role: "citizenx.sandbox.role",
   campaigns: "citizenx.sandbox.campaigns",
   supplierApplications: "citizenx.sandbox.supplier-applications",
   assignments: "citizenx.sandbox.assignments",
   reviews: "citizenx.sandbox.reviews",
-  adverts: "citizenx.sandbox.adverts"
+  adverts: "citizenx.sandbox.adverts",
+  campaignUpdates: "citizenx.sandbox.campaign-updates"
 } as const;
 
 export function readSandbox<T>(key: string, fallback: T): T {

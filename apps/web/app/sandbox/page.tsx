@@ -11,7 +11,7 @@ export default function SandboxPage() {
           <div>
             <p className="eyebrow">Interactive pilot</p>
             <h1>Test CitizenX from every side.</h1>
-            <p>Switch roles, complete the core journeys and see how each action changes the sandbox. Nothing here moves real money or submits real identity information.</p>
+            <p>Switch roles, complete the core journeys and see how each action changes the sandbox. Nothing here moves real money; use demo names, messages and photographs only.</p>
           </div>
           <span className="sandbox-mode-badge">Sandbox mode</span>
         </div>

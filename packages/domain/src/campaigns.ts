@@ -34,6 +34,26 @@ export interface Campaign {
   milestones: CampaignMilestone[];
 }
 
+export interface CampaignUpdate {
+  id: string;
+  campaignSlug: string;
+  title: string;
+  body: string;
+  publishedAt: string;
+  author: string;
+  image?: string;
+  imageAlt?: string;
+}
+
+export interface CampaignSupporter {
+  id: string;
+  campaignSlug: string;
+  fullName: string;
+  amountCents: number;
+  message?: string;
+  contributedAt: string;
+}
+
 export const campaigns: Campaign[] = [
   {
     slug: "ward-12-clinic-water-tank",
@@ -181,8 +201,91 @@ export const campaigns: Campaign[] = [
   }
 ];
 
+export const campaignUpdates: CampaignUpdate[] = [
+  {
+    id: "update-clinic-2",
+    campaignSlug: "ward-12-clinic-water-tank",
+    title: "Tank base and pipe route approved",
+    body: "The clinic team, installer and ward safety representative completed the site walk-through. The reinforced base is ready and the final pipe route avoids the patient entrance. Installation evidence will be added after pressure testing.",
+    publishedAt: "2026-11-04T10:15:00+02:00",
+    author: "Naledi Mokoena",
+    image: "/images/campaigns/clinic-water-tank.jpg",
+    imageAlt: "Technicians checking the water tank and installation area outside the clinic."
+  },
+  {
+    id: "update-library-2",
+    campaignSlug: "school-library-rebuild",
+    title: "The first shelving units are in",
+    body: "Local carpenters have installed the first wall of shelving. Teachers have started sorting the donated books while the remaining electrical work is inspected.",
+    publishedAt: "2026-11-02T14:30:00+02:00",
+    author: "Ayanda Ndlovu",
+    image: "/images/campaigns/school-library.jpg",
+    imageAlt: "School staff arranging books on newly installed library shelves."
+  },
+  {
+    id: "update-lab-2",
+    campaignSlug: "soweto-youth-skills-lab",
+    title: "Pilot class completed",
+    body: "Twelve learners tested the training plan using borrowed devices. Their feedback helped us improve the timetable and accessibility requirements before equipment procurement.",
+    publishedAt: "2026-10-29T16:00:00+02:00",
+    author: "Kagiso Dlamini",
+    image: "/images/campaigns/youth-skills-lab.jpg",
+    imageAlt: "Young people testing laptops during a digital skills class."
+  },
+  {
+    id: "update-flood-2",
+    campaignSlug: "delft-flood-resilience-hub",
+    title: "Emergency stock room mapped",
+    body: "Volunteers labelled storage zones for water, blankets, lighting and first-response packs. The public inventory checklist is now ready for supplier delivery.",
+    publishedAt: "2026-10-27T11:45:00+02:00",
+    author: "Zimasa Nqoko",
+    image: "/images/campaigns/flood-resilience-hub.jpg",
+    imageAlt: "Volunteers organising supplies in the community emergency stock room."
+  },
+  {
+    id: "update-assembly-2",
+    campaignSlug: "accessible-ward-assemblies",
+    title: "Accessibility equipment tested",
+    body: "Residents tested the portable ramp, hearing loop and accessible signage at the first venue. The feedback is now part of the supplier handover checklist.",
+    publishedAt: "2026-10-24T09:20:00+02:00",
+    author: "Refilwe Molefe",
+    image: "/images/campaigns/accessible-ward-meetings.jpg",
+    imageAlt: "Residents testing accessible features inside a community meeting venue."
+  },
+  {
+    id: "update-river-2",
+    campaignSlug: "umngeni-river-restoration-watch",
+    title: "First clean-up and water samples completed",
+    body: "The volunteer team removed 38 bags of waste and the accredited laboratory collected baseline samples. Results will be published with the supplier invoice when verified.",
+    publishedAt: "2026-10-22T13:10:00+02:00",
+    author: "Sanele Zulu",
+    image: "/images/campaigns/river-restoration.jpg",
+    imageAlt: "Community volunteers collecting waste and testing water beside the river."
+  }
+];
+
+export const campaignSupporters: CampaignSupporter[] = [
+  { id: "support-1", campaignSlug: "ward-12-clinic-water-tank", fullName: "Thandi Maseko", amountCents: 50000, message: "Reliable water at the clinic will help every family in the ward.", contributedAt: "2026-11-06T08:40:00+02:00" },
+  { id: "support-2", campaignSlug: "ward-12-clinic-water-tank", fullName: "Sipho Daniels", amountCents: 25000, message: "Proud to support a practical project with visible accountability.", contributedAt: "2026-11-05T17:12:00+02:00" },
+  { id: "support-3", campaignSlug: "ward-12-clinic-water-tank", fullName: "Mariam Khan", amountCents: 100000, message: "For the nurses and patients who keep this clinic going.", contributedAt: "2026-11-03T12:05:00+02:00" },
+  { id: "support-4", campaignSlug: "school-library-rebuild", fullName: "Lwazi Nkomo", amountCents: 30000, message: "May this library open many new worlds for the learners.", contributedAt: "2026-11-04T09:10:00+02:00" },
+  { id: "support-5", campaignSlug: "school-library-rebuild", fullName: "Carla Petersen", amountCents: 75000, message: "Books and a safe learning space are an investment in the whole community.", contributedAt: "2026-11-01T18:20:00+02:00" },
+  { id: "support-6", campaignSlug: "soweto-youth-skills-lab", fullName: "Neo Molefe", amountCents: 50000, message: "Looking forward to seeing young people build and create here.", contributedAt: "2026-10-31T15:35:00+02:00" },
+  { id: "support-7", campaignSlug: "delft-flood-resilience-hub", fullName: "Fatima Abrahams", amountCents: 20000, message: "Thank you to the volunteers preparing before the next storm.", contributedAt: "2026-10-30T07:55:00+02:00" },
+  { id: "support-8", campaignSlug: "accessible-ward-assemblies", fullName: "Tshepo Radebe", amountCents: 40000, message: "Public participation must include every resident.", contributedAt: "2026-10-28T19:05:00+02:00" },
+  { id: "support-9", campaignSlug: "umngeni-river-restoration-watch", fullName: "Priya Naidoo", amountCents: 60000, message: "Thank you for combining credible testing with community action.", contributedAt: "2026-10-25T10:25:00+02:00" }
+];
+
 export function getCampaign(slug: string): Campaign | undefined {
   return campaigns.find((campaign) => campaign.slug === slug);
+}
+
+export function getCampaignUpdates(slug: string): CampaignUpdate[] {
+  return campaignUpdates.filter((update) => update.campaignSlug === slug).sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+}
+
+export function getCampaignSupporters(slug: string): CampaignSupporter[] {
+  return campaignSupporters.filter((supporter) => supporter.campaignSlug === slug).sort((a, b) => b.contributedAt.localeCompare(a.contributedAt));
 }
 
 export function campaignProgress(campaign: Pick<Campaign, "raisedCents" | "goalCents">): number {

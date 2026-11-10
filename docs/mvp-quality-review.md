@@ -1,6 +1,6 @@
 # CitizenX MVP quality review
 
-Reviewed: 15 October 2026
+Reviewed: 10 November 2026
 
 ## What this pass improved
 
@@ -20,6 +20,12 @@ Reviewed: 15 October 2026
 - Added an Admin control centre with the four authorised administrators: Patrick Schofield, Chelsea Williamson, Lindo Mathenjwa and Thatoyaona Harris.
 - Corrected the supplier workflow so campaign creators submit completion evidence and an Admin separately approves or declines the sandbox payment before a verified review unlocks.
 - Added a dedicated supplier-payment queue with campaign, milestone, evidence, invoice, approver, decision note and payment-reference context.
+- Reworked campaign detail pages into a continuous contribution flow with story, milestones, campaigner updates, supporter messages and trust controls visible in one place.
+- Added dated campaigner progress updates with photographs, descriptive alternatives and a browser-local Campaign Creator publishing tool.
+- Replaced supporter initials with full-name or anonymous display choices and added optional public messages of support.
+- Replaced percentage tips with fixed rand amounts and kept platform tips separate from campaign income.
+- Split the public payments audit into income, paid expenses and protected-but-unpaid allocations, with a visible reconciliation equation.
+- Relabelled the experience as QA while retaining demo-only data and clear warnings that no real payment or identity provider is contacted.
 
 ## Accessibility verification
 
@@ -43,9 +49,9 @@ The implementation targets WCAG 2.2 Level AA. Axe-core 4.13.0 was run with the `
 - About CitizenX
 - How CitizenX works
 
-Final result: zero automated violations across the tested routes.
+The November QA pass reran axe-core 4.13.0 against Home, Find a campaign, Campaign detail, Contribution flow, Public ledger and Sandbox hub after the campaign, donation and audit changes. Final result: zero automated violations across all six updated routes, with the earlier 17-route result retained for the wider experience.
 
-Manual checks covered visible keyboard focus, skip navigation, labelled controls, meaningful image alternatives, step-change focus, landmark and heading order, 390px reflow without horizontal overflow, touch-target sizing, reduced-motion support and colour-token contrast.
+Manual checks covered visible keyboard focus, skip navigation, labelled controls, meaningful image alternatives, step-change focus, landmark and heading order, 390px reflow without horizontal overflow, touch-target sizing, reduced-motion support and colour-token contrast. The November pass also exercised a Campaign Creator update, a named contribution with a support message and fixed tip, supporter persistence and income/expense reconciliation in the exported build.
 
 Automated testing cannot establish full conformance on its own. Before a public beta, CitizenX should also complete assistive-technology testing with VoiceOver, NVDA and TalkBack users, browser and zoom-matrix testing, and an independent audit of the production identity, payment and document-upload journeys.
 

@@ -32,7 +32,7 @@ export default function AccessibilityPage() {
             </ul>
             <h2>Tell us about a barrier</h2>
             <p>If anything prevents you from finding, understanding or completing a task, email <a href="mailto:hello@citizenx.fund">hello@citizenx.fund</a>. Please include the page and what you were trying to do.</p>
-            <p className="fine-print">This statement applies to the CitizenX MVP pilot and was last reviewed in October 2026.</p>
+            <p className="fine-print">This statement applies to the CitizenX MVP QA experience and was last reviewed in November 2026.</p>
           </div>
         </div>
       </section>

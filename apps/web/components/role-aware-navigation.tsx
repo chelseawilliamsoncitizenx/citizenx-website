@@ -37,6 +37,7 @@ const roleTools: Record<SandboxRole, { label: string; description: string; items
     items: [
       { href: "/create-campaign/", label: "Create a campaign", description: "Build the goal, budget and milestones.", icon: "campaign" },
       { href: "/suppliers/", label: "Find a supplier", description: "Choose verified help for campaign work.", icon: "supplier" },
+      { href: "/campaigns/ward-12-clinic-water-tank/#updates", label: "Post campaign update", description: "Share progress notes and demo photographs.", icon: "track" },
       { href: "/sandbox/", label: "Creator workspace", description: "See your full sandbox workflow.", icon: "track" }
     ]
   },

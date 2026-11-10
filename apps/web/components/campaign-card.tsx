@@ -1,10 +1,11 @@
-import { campaignProgress, formatZar, type Campaign } from "@citizenx/domain";
+import { campaignProgress, formatZar, getCampaignUpdates, type Campaign } from "@citizenx/domain";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowIcon, CheckIcon } from "./icons";
 
 export function CampaignCard({ campaign }: { campaign: Campaign }) {
   const progress = campaignProgress(campaign);
+  const latestUpdate = getCampaignUpdates(campaign.slug)[0];
 
   return (
     <article className="campaign-card">
@@ -30,6 +31,7 @@ export function CampaignCard({ campaign }: { campaign: Campaign }) {
           <span>{progress}% raised</span>
           <span>{campaign.contributorCount} contributors</span>
         </div>
+        {latestUpdate ? <p className="campaign-update-teaser"><strong>Latest update</strong><span>{latestUpdate.title}</span><small>{new Intl.DateTimeFormat("en-ZA", { day: "numeric", month: "short", year: "numeric" }).format(new Date(latestUpdate.publishedAt))}</small></p> : null}
         <Link className="card-link" href={`/campaigns/${campaign.slug}/`}>
           View campaign <ArrowIcon />
         </Link>

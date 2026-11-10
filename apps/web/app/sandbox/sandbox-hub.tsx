@@ -12,7 +12,8 @@ const roleActions: Record<SandboxRole, Array<{ title: string; copy: string; href
   ],
   campaign_creator: [
     { title: "Create a campaign", copy: "Build a goal, budget and milestones, then submit for founder approval.", href: "/create-campaign/", cta: "Start campaign", icon: "campaign" },
-    { title: "Choose verified suppliers", copy: "Assign suppliers to a milestone and review them only after completed work.", href: "/suppliers/", cta: "Find a supplier", icon: "supplier" }
+    { title: "Choose verified suppliers", copy: "Assign suppliers to a milestone and review them only after completed work.", href: "/suppliers/", cta: "Find a supplier", icon: "supplier" },
+    { title: "Publish campaign updates", copy: "Share dated progress notes and demo photographs with campaign supporters.", href: "/campaigns/ward-12-clinic-water-tank/#updates", cta: "Post an update", icon: "track" }
   ],
   supplier: [
     { title: "Register your business", copy: "Submit service and compliance details for mock verification.", href: "/suppliers/register/", cta: "Apply for verification", icon: "verify" },

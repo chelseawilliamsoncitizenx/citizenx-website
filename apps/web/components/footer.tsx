@@ -8,7 +8,7 @@ export function Footer() {
         <div>
           <Logo />
           <p>Transparent funding. Accountable leadership. Citizen-powered democracy.</p>
-          <p className="footer-note">Pilot experience · No real payments are processed.</p>
+          <p className="footer-note">QA experience · Demo data only · No real payments are processed.</p>
         </div>
         <nav aria-label="Footer navigation">
           <Link href="/">Home</Link>
