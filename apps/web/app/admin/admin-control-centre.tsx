@@ -16,7 +16,7 @@ export function AdminControlCentre() {
       const campaigns = readSandbox<SandboxCampaign[]>(keys.campaigns, [seedSandboxCampaign]);
       const suppliers = readSandbox<SandboxSupplierApplication[]>(keys.supplierApplications, [seedSupplierApplication]);
       const assignments = readSandbox<SandboxAssignment[]>(keys.assignments, [seedSandboxAssignment]);
-      const paymentPending = (assignment: SandboxAssignment) => assignment.status === "completion_submitted" || assignment.status === "completed";
+      const paymentPending = (assignment: SandboxAssignment) => assignment.status === "completion_approved";
 
       setSummary({
         campaigns: campaigns.filter((campaign) => campaign.status === "under_review").length,
@@ -61,7 +61,7 @@ export function AdminControlCentre() {
         <section className="admin-panel" aria-labelledby="admin-team-title">
           <p className="eyebrow">Authorised administrators</p>
           <h2 id="admin-team-title">CitizenX admin team</h2>
-          <ul className="admin-team-list">{sandboxAdmins.map((admin) => <li key={admin.email}><span aria-hidden="true">{admin.name.split(" ").map((part) => part[0]).join("")}</span><div><strong>{admin.name}</strong><a href={`mailto:${admin.email}`}>{admin.email}</a></div></li>)}</ul>
+          <ul className="admin-team-list">{sandboxAdmins.map((admin) => <li key={admin.email}><span aria-hidden="true">{admin.name.split(" ").map((part) => part[0]).join("")}</span><div><strong>{admin.name}</strong><a href={`mailto:hello@citizenx.fund?subject=${encodeURIComponent(`For ${admin.name} · CitizenX admin enquiry`)}`}>{admin.email}</a></div></li>)}</ul>
         </section>
 
         <section className="admin-panel" aria-labelledby="audit-title">

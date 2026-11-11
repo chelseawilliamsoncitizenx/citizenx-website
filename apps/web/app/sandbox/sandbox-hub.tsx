@@ -12,10 +12,12 @@ const roleActions: Record<SandboxRole, Array<{ title: string; copy: string; href
   ],
   campaign_creator: [
     { title: "Create a campaign", copy: "Build a goal, budget and milestones, then submit for founder approval.", href: "/create-campaign/", cta: "Start campaign", icon: "campaign" },
-    { title: "Choose verified suppliers", copy: "Assign suppliers to a milestone and review them only after completed work.", href: "/suppliers/", cta: "Find a supplier", icon: "supplier" },
+    { title: "Choose verified suppliers", copy: "Invite a supplier to one or more campaign milestones with a detailed scope.", href: "/suppliers/", cta: "Find a supplier", icon: "supplier" },
+    { title: "Manage supplier work", copy: "Review questions, quotations, invoices, completion evidence and mandatory updates.", href: "/supplier-engagements/", cta: "Open engagements", icon: "track" },
     { title: "Publish campaign updates", copy: "Share dated progress notes and demo photographs with campaign supporters.", href: "/campaigns/ward-12-clinic-water-tank/#updates", cta: "Post an update", icon: "track" }
   ],
   supplier: [
+    { title: "Review work enquiries", copy: "Ask questions, record an external meeting, submit quotations, invoices and proof of completion.", href: "/supplier-engagements/", cta: "Open supplier inbox", icon: "track" },
     { title: "Register your business", copy: "Submit service and compliance details for mock verification.", href: "/suppliers/register/", cta: "Apply for verification", icon: "verify" },
     { title: "Promote your services", copy: "Buy a clearly labelled 7- or 30-day sponsored placement with a sandbox payment.", href: "/suppliers/promote/", cta: "Create an advert", icon: "megaphone" }
   ],
@@ -112,7 +114,7 @@ export function SandboxHub() {
         </div>
         <div className="sandbox-explainer">
           <strong>How to test the connected flow</strong>
-          <p>Create a campaign as a Campaign Creator, approve it as Admin, assign a verified supplier, submit completion evidence, approve the supplier payment as Admin and then leave a verified review. Each action is stored only in this browser.</p>
+          <p>As Campaign Creator, invite a supplier and define the scope. Switch to Supplier to respond, quote, invoice and submit proof of completion. Switch back to Campaign Creator to approve completion, publish the mandatory campaign update and review, then use Admin to approve payment. Notifications and email previews are stored only in this browser.</p>
         </div>
       </div>
     </div>

@@ -18,13 +18,15 @@ export function DonationFlow({ campaign }: { campaign: Campaign }) {
   const [declared, setDeclared] = useState(false);
   const [method, setMethod] = useState<DonationPaymentMethod>("instant_eft");
   const [tipPercentage, setTipPercentage] = useState(10);
+  const [customTip, setCustomTip] = useState("");
   const [receipt, setReceipt] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const flowPanel = useRef<HTMLFormElement>(null);
   const previousStep = useRef(step);
 
   const donationAmount = customAmount ? Math.max(0, Math.round(Number(customAmount) * 100)) : amountCents;
-  const tipCents = Math.round(donationAmount * tipPercentage / 100);
+  const customTipCents = customTip === "" ? null : Math.max(0, Math.round(Number(customTip) * 100));
+  const tipCents = customTipCents ?? Math.round(donationAmount * tipPercentage / 100);
   const totalCents = donationAmount + tipCents;
   const canContinue = Number.isInteger(donationAmount) && donationAmount >= 2000;
   const hasValidName = fullName.trim().split(/\s+/).length >= 2 && fullName.trim().length >= 5;
@@ -53,7 +55,7 @@ export function DonationFlow({ campaign }: { campaign: Campaign }) {
       campaignSlug: campaign.slug,
       amountCents: donationAmount,
       tipCents,
-      tipPercent: tipPercentage,
+      tipPercent: customTipCents === null ? tipPercentage : 0,
       occurredAt: new Date().toISOString(),
       visibility,
       method,
@@ -78,7 +80,7 @@ export function DonationFlow({ campaign }: { campaign: Campaign }) {
               <div><dt>Reference</dt><dd>{receipt}</dd></div>
               <div><dt>Payment</dt><dd>Sandbox · {method === "instant_eft" ? "Instant EFT" : "Card"}</dd></div>
               <div><dt>Supporter</dt><dd>{visibility === "anonymous" ? "Anonymous" : fullName.trim()}</dd></div>
-              <div><dt>CitizenX tip</dt><dd>{tipPercentage}% · {formatZar(tipCents)}</dd></div>
+              <div><dt>CitizenX tip</dt><dd>{customTipCents === null ? `${tipPercentage}% · ` : "Custom amount · "}{formatZar(tipCents)}</dd></div>
               <div><dt>Total</dt><dd>{formatZar(totalCents)}</dd></div>
             </dl>
             <div className="button-row button-row-center">
@@ -143,7 +145,7 @@ export function DonationFlow({ campaign }: { campaign: Campaign }) {
                   <label className={method === "instant_eft" ? "selected" : ""}><input type="radio" name="method" value="instant_eft" checked={method === "instant_eft"} onChange={() => setMethod("instant_eft")} /><span><strong>Instant EFT</strong><small>Simulated secure bank payment</small></span></label>
                   <label className={method === "card" ? "selected" : ""}><input type="radio" name="method" value="card" checked={method === "card"} onChange={() => setMethod("card")} /><span><strong>Debit or credit card</strong><small>Simulated secure card checkout</small></span></label>
                 </div>
-                <div className="tip-box tip-slider-box"><div><p className="eyebrow">Optional tip</p><strong>CitizenX charges a 0% platform fee for this campaign.</strong><p>Your optional tip helps us keep the service available and support more citizen-led projects. It remains separate from the campaign contribution.</p></div><div className="tip-slider-control"><output htmlFor="tip-percentage" aria-live="polite">{tipPercentage === 0 ? "No tip" : `${tipPercentage}% · ${formatZar(tipCents)}`}</output><input id="tip-percentage" type="range" min="0" max="20" step="1" value={tipPercentage} onChange={(event) => setTipPercentage(Number(event.target.value))} aria-label="Optional CitizenX tip percentage" aria-valuetext={tipPercentage === 0 ? "No tip" : `${tipPercentage} percent, ${formatZar(tipCents)}`} /><div className="tip-scale" aria-hidden="true"><span>0%</span><span>5%</span><span>10%</span><span>15%</span><span>20%</span></div></div></div>
+                <div className="tip-box tip-slider-box"><div><p className="eyebrow">Optional tip</p><strong>CitizenX charges a 0% platform fee for this campaign.</strong><p>Your optional tip helps us keep the service available and support more citizen-led projects. It remains separate from the campaign contribution.</p></div><div className="tip-slider-control"><output htmlFor="tip-percentage" aria-live="polite">{customTipCents !== null ? `Custom tip · ${formatZar(tipCents)}` : tipPercentage === 0 ? "No tip" : `${tipPercentage}% · ${formatZar(tipCents)}`}</output><input id="tip-percentage" type="range" min="0" max="20" step="1" value={tipPercentage} onChange={(event) => { setTipPercentage(Number(event.target.value)); setCustomTip(""); }} aria-label="Optional CitizenX tip percentage" aria-valuetext={customTipCents !== null ? `Custom tip, ${formatZar(tipCents)}` : tipPercentage === 0 ? "No tip" : `${tipPercentage} percent, ${formatZar(tipCents)}`} /><div className="tip-scale" aria-hidden="true"><span>0%</span><span>5%</span><span>10%</span><span>15%</span><span>20%</span></div><div className="field custom-tip-field"><label htmlFor="custom-tip">Or enter another amount</label><span aria-hidden="true">R</span><input id="custom-tip" type="number" min="0" step="1" inputMode="decimal" value={customTip} onChange={(event) => { setCustomTip(event.target.value); if (event.target.value !== "") setTipPercentage(0); }} placeholder="Custom tip" /></div></div></div>
                 <div className="order-summary"><div><span>Campaign contribution</span><strong>{formatZar(donationAmount)}</strong></div><div><span>Optional CitizenX tip</span><strong>{formatZar(tipCents)}</strong></div><div className="order-total"><span>Total</span><strong>{formatZar(totalCents)}</strong></div></div>
                 <div className="form-actions"><button className="button button-secondary" type="button" onClick={() => setStep(2)}>Back</button><button className="button button-primary" type="submit" disabled={busy}>{busy ? "Processing…" : "Complete sandbox contribution"} <ArrowIcon /></button></div>
               </fieldset>

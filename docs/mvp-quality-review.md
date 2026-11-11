@@ -1,6 +1,6 @@
 # CitizenX MVP quality review
 
-Reviewed: 10 November 2026
+Reviewed: 11 November 2026
 
 ## What this pass improved
 
@@ -24,10 +24,10 @@ Reviewed: 10 November 2026
 - Added dated campaigner progress updates with photographs, descriptive alternatives and a browser-local Campaign Creator publishing tool.
 - Replaced supporter initials with full-name or anonymous display choices and added optional public messages of support.
 - Moved contribution visibility ahead of legal-name collection, preserving the distinction between a private legal name and an anonymous public contribution.
-- Replaced fixed tips with an accessible 0–20% slider that shows both the selected percentage and rand amount, while keeping platform tips separate from campaign income.
+- Added an accessible 0–20% tip slider plus an “Or enter another amount” field; a custom rand amount overrides the slider and remains separate from campaign income.
 - Split the public payments audit into deep-linked Income audit trail and Expense audit trail views, with a visible reconciliation equation and protected-but-unpaid allocations.
 - Added scalable ledger search, status and date filters, pagination and CSV export.
-- Replaced the income demo's lump-sum-only presentation with mostly individual contribution records and two clearly labelled aggregate settlements.
+- Replaced the income demo's lump-sum presentation with deterministic individual contribution records that reconcile exactly to every campaign total.
 - Added public-interest expense evidence including invoice and VAT treatment, supplier verification, procurement method, approver, conflict declaration, payment reference and supporting evidence links.
 - Removed empty supporter-message placeholders so contributions without a public message show only the supporter and amount.
 - Relabelled the experience as QA while retaining demo-only data and clear warnings that no real payment or identity provider is contacted.
@@ -56,7 +56,9 @@ The implementation targets WCAG 2.2 Level AA. Axe-core 4.13.0 was run with the `
 
 The final November QA pass reran axe-core 4.13.0 against Campaign detail, Contribution flow, Income audit trail and Expense audit trail after the contribution and audit changes. Final result: zero automated violations across all four updated views, with the earlier 17-route result retained for the wider experience.
 
-Manual checks covered visible keyboard focus, skip navigation, labelled controls, meaningful image alternatives, step-change focus, landmark and heading order, 390px reflow without page-level horizontal overflow, touch-target sizing, reduced-motion support and colour-token contrast. The November pass also exercised keyboard switching between audit tabs, audit deep links, ledger filtering and pagination, CSV export, an anonymous contribution without a support message, percentage-tip calculation, supporter persistence and income/expense reconciliation in the exported build.
+The 11 November launch pass used axe-core 4.14.0 against Home, Founding network contact, Campaign detail, Contribution flow, both ledger audit views, Verified suppliers and Supplier detail. One duplicate `main` landmark was found on Supplier detail, corrected, rebuilt and rerun. Final result: zero automated violations on all eight representative launch routes.
+
+Manual checks covered visible keyboard focus, skip navigation, labelled controls, meaningful image alternatives, step-change focus, landmark and heading order, 390px reflow without page-level horizontal overflow, touch-target sizing, reduced-motion support and colour-token contrast. The November pass also exercised audit tabs and deep links, full-audit CSV export, an anonymous contribution without a support message, percentage and custom-rand tip calculation, supplier rating filters, creator-only supplier assignment and the complete browser-local supplier workflow from enquiry through quote, invoice, completion proof, mandatory campaign update, review and Admin payment approval.
 
 Automated testing cannot establish full conformance on its own. Before a public beta, CitizenX should also complete assistive-technology testing with VoiceOver, NVDA and TalkBack users, browser and zoom-matrix testing, and an independent audit of the production identity, payment and document-upload journeys.
 

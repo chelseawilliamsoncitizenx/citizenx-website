@@ -17,6 +17,7 @@ const primaryNavigation: NavItem[] = [
 const moreNavigation: NavItem[] = [
   { href: "/how-it-works/", label: "How it works", description: "Follow every rand from contribution to proof.", icon: "track" },
   { href: "/about/", label: "About CitizenX", description: "Our purpose, principles and public-interest model.", icon: "community" },
+  { href: "/join/", label: "Join the founding network", description: "Contact CitizenX about partnerships and early participation.", icon: "globe" },
   { href: "/sandbox/", label: "Sandbox workspace", description: "Test the MVP safely from every role.", icon: "lock" },
   { href: "/accessibility/", label: "Accessibility", description: "How this pilot supports inclusive access.", icon: "verify" }
 ];
@@ -37,6 +38,7 @@ const roleTools: Record<SandboxRole, { label: string; description: string; items
     items: [
       { href: "/create-campaign/", label: "Create a campaign", description: "Build the goal, budget and milestones.", icon: "campaign" },
       { href: "/suppliers/", label: "Find a supplier", description: "Choose verified help for campaign work.", icon: "supplier" },
+      { href: "/supplier-engagements/", label: "Supplier engagements", description: "Manage quotations, invoices and completion approvals.", icon: "track" },
       { href: "/campaigns/ward-12-clinic-water-tank/#updates", label: "Post campaign update", description: "Share progress notes and demo photographs.", icon: "track" },
       { href: "/sandbox/", label: "Creator workspace", description: "See your full sandbox workflow.", icon: "track" }
     ]
@@ -46,6 +48,7 @@ const roleTools: Record<SandboxRole, { label: string; description: string; items
     description: "Get verified, win trusted work and build a reputation.",
     items: [
       { href: "/suppliers/register/", label: "Apply for verification", description: "Register a supplier in the sandbox.", icon: "verify" },
+      { href: "/supplier-engagements/", label: "Work enquiries", description: "Respond, quote, invoice and submit completion evidence.", icon: "track" },
       { href: "/suppliers/promote/", label: "Promote services", description: "Create a clearly labelled paid placement.", icon: "megaphone" },
       { href: "/suppliers/", label: "Supplier directory", description: "View ratings, reviews and assignments.", icon: "supplier" }
     ]
@@ -121,7 +124,7 @@ export function RoleAwareNavigation() {
           <summary><span>More</span><ChevronIcon /></summary>
           <div className="nav-dropdown-panel">
             <p><strong>Explore CitizenX</strong><span>Essential information and pilot tools.</span></p>
-            <nav aria-label="More CitizenX links"><MenuItems items={moreNavigation} /><a className="menu-link" href="https://www.citizenx.fund/#join"><span className="menu-icon" aria-hidden="true"><FeatureIcon name="globe" size={19} /></span><span><strong>Founding network</strong><small>Join the wider CitizenX initiative.</small></span></a></nav>
+            <nav aria-label="More CitizenX links"><MenuItems items={moreNavigation} /></nav>
           </div>
         </details>
       </div>

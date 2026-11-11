@@ -37,17 +37,54 @@ export interface SandboxAssignment {
   id: string;
   supplierSlug: string;
   supplierName: string;
+  supplierEmail?: string;
   campaignId?: string;
+  campaignSlug?: string;
   campaignTitle?: string;
   milestone: string;
+  milestones?: string[];
   amountRand: number;
-  status: "assigned" | "completion_submitted" | "evidence_requested" | "paid" | "reviewed" | "completed";
+  status: "enquiry_sent" | "questions_sent" | "quote_submitted" | "quote_accepted" | "quote_declined" | "invoice_submitted" | "work_in_progress" | "completion_submitted" | "completion_approved" | "evidence_requested" | "paid" | "reviewed" | "completed" | "assigned";
+  createdAt?: string;
+  scope?: string;
+  siteNote?: string;
+  sitePhotoDataUrl?: string;
+  sitePhotoAlt?: string;
+  meetingNote?: string;
+  messages?: SandboxEngagementMessage[];
+  quoteReference?: string;
+  quoteAmountRand?: number;
+  quoteTerms?: string;
+  quoteSubmittedAt?: string;
+  quoteDecisionNote?: string;
+  invoiceNote?: string;
   evidenceNote?: string;
+  completionPhotoDataUrl?: string;
+  completionPhotoAlt?: string;
+  campaignUpdateTitle?: string;
+  campaignUpdateBody?: string;
   invoiceReference?: string;
   paymentApprovedBy?: string;
   paymentApprovedAt?: string;
   paymentReference?: string;
   paymentDecisionNote?: string;
+}
+
+export interface SandboxEngagementMessage {
+  id: string;
+  senderRole: "campaign_creator" | "supplier";
+  senderName: string;
+  text: string;
+  createdAt: string;
+}
+
+export interface SandboxNotification {
+  id: string;
+  role: "campaign_creator" | "supplier" | "admin";
+  title: string;
+  body: string;
+  createdAt: string;
+  emailPreviewTo?: string;
 }
 
 export interface SandboxReview {
@@ -90,7 +127,8 @@ export const keys = {
   assignments: "citizenx.sandbox.assignments",
   reviews: "citizenx.sandbox.reviews",
   adverts: "citizenx.sandbox.adverts",
-  campaignUpdates: "citizenx.sandbox.campaign-updates"
+  campaignUpdates: "citizenx.sandbox.campaign-updates",
+  notifications: "citizenx.sandbox.notifications"
 } as const;
 
 export function readSandbox<T>(key: string, fallback: T): T {
@@ -151,11 +189,19 @@ export const seedSandboxAssignment: SandboxAssignment = {
   id: "job-seed-library-print",
   supplierSlug: "imbizo-printworks",
   supplierName: "Imbizo Printworks",
+  supplierEmail: "orders@imbizoprint.demo",
   campaignId: "school-library-rebuild",
+  campaignSlug: "school-library-rebuild",
   campaignTitle: "School library rebuild",
   milestone: "Print multilingual reading packs",
+  milestones: ["Print multilingual reading packs"],
   amountRand: 18400,
-  status: "completion_submitted",
+  status: "completion_approved",
+  createdAt: "2026-10-30T09:00:00.000Z",
+  scope: "Print, proof and deliver multilingual reading packs to the school office.",
   evidenceNote: "Final print proof, delivery note and school receipt uploaded for the sandbox review.",
-  invoiceReference: "INV-SBX-1042"
+  invoiceReference: "INV-SBX-1042",
+  campaignUpdateTitle: "Multilingual reading packs delivered",
+  campaignUpdateBody: "The school received the completed reading packs and confirmed the print quality and quantities.",
+  messages: []
 };

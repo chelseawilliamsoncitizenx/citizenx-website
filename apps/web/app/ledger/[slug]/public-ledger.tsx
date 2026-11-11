@@ -7,7 +7,7 @@ import { CheckIcon, ShieldIcon } from "../../../components/icons";
 import { readSandboxDonations, type SandboxDonation } from "../../../lib/donations";
 
 type AuditView = "income" | "expenses";
-type AuditStatus = "all" | "settled" | "aggregate" | "paid";
+type AuditStatus = "all" | "settled" | "paid";
 type AuditDateRange = "all" | "7" | "30" | "90";
 
 const pageSize = 8;
@@ -88,7 +88,7 @@ export function PublicLedger({ campaign, seedEvents }: { campaign: Campaign; see
       const searchable = [event.label, event.detail, event.reference, event.paymentMethod, event.milestone, event.invoiceReference, event.supplierVerification, event.approver, event.paymentReference].filter(Boolean).join(" ").toLowerCase();
       const matchesSearch = !query || searchable.includes(query);
       const matchesDate = cutoff === null || new Date(event.occurredAt).getTime() >= cutoff;
-      const matchesStatus = status === "all" || (status === "aggregate" ? event.recordType === "aggregate" : event.status === status);
+      const matchesStatus = status === "all" || event.status === status;
       return matchesSearch && matchesDate && matchesStatus;
     });
   }, [sourceEntries, search, status, dateRange]);
@@ -112,6 +112,16 @@ export function PublicLedger({ campaign, seedEvents }: { campaign: Campaign; see
     window.requestAnimationFrame(() => document.getElementById(`${nextView === "income" ? "income" : "expenses"}-tab`)?.focus());
   }
 
+  function saveCsv(filename: string, header: string[], rows: Array<Array<string | number>>) {
+    const csv = [header, ...rows].map((row) => row.map(csvCell).join(",")).join("\n");
+    const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = filename;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  }
+
   function downloadAuditCsv() {
     const header = activeView === "income"
       ? ["Date", "Contributor", "Reference", "Record type", "Payment route", "Status", "Amount (ZAR)"]
@@ -120,13 +130,19 @@ export function PublicLedger({ campaign, seedEvents }: { campaign: Campaign; see
       ? [dateFormat.format(new Date(event.occurredAt)), event.label, event.reference ?? "", event.recordType ?? "", event.paymentMethod ?? "", event.status ?? "", (event.amountCents / 100).toFixed(2)]
       : [dateFormat.format(new Date(event.occurredAt)), event.label, event.reference ?? "", event.milestone ?? "", event.invoiceReference ?? "", event.vatTreatment ?? "", event.supplierVerification ?? "", event.procurementMethod ?? "", event.approver ?? "", event.conflictDeclaration ?? "", event.paymentReference ?? "", event.status ?? "", (event.amountCents / 100).toFixed(2)]
     );
-    const csv = [header, ...rows].map((row) => row.map(csvCell).join(",")).join("\n");
-    const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = `${campaign.slug}-${activeView}-audit.csv`;
-    anchor.click();
-    URL.revokeObjectURL(url);
+    saveCsv(`${campaign.slug}-${activeView}-audit.csv`, header, rows);
+  }
+
+  function downloadFullAuditCsv() {
+    const header = ["Record class", "Date", "Party", "Reference", "Description", "Status", "Amount (ZAR)", "Payment route", "Milestone", "Invoice", "VAT treatment", "Supplier verification", "Procurement evidence", "Approver", "Conflict declaration", "Payment reference", "Evidence"];
+    const rows = [...incomeEntries, ...expenseEntries, ...protectedEntries]
+      .sort((a, b) => b.occurredAt.localeCompare(a.occurredAt))
+      .map((event) => [
+        event.kind === "in" ? "Income" : event.kind === "out" ? "Paid expense" : "Protected commitment",
+        dateFormat.format(new Date(event.occurredAt)), event.label, event.reference ?? "", event.detail, event.status ?? "", (event.amountCents / 100).toFixed(2),
+        event.paymentMethod ?? "", event.milestone ?? "", event.invoiceReference ?? "", event.vatTreatment ?? "", event.supplierVerification ?? "", event.procurementMethod ?? "", event.approver ?? "", event.conflictDeclaration ?? "", event.paymentReference ?? "", event.evidenceLabel ?? ""
+      ]);
+    saveCsv(`${campaign.slug}-full-public-audit.csv`, header, rows);
   }
 
   return (
@@ -160,9 +176,12 @@ export function PublicLedger({ campaign, seedEvents }: { campaign: Campaign; see
               <div><dt>Unresolved variance</dt><dd>{formatZar(unresolvedVariance)}</dd></div>
             </dl>
 
-            <div className="audit-view-tabs" role="tablist" aria-label="Choose audit trail">
-              <button id="income-tab" type="button" role="tab" tabIndex={activeView === "income" ? 0 : -1} aria-selected={activeView === "income"} aria-controls="audit-records-panel" className={activeView === "income" ? "active" : ""} onClick={() => changeView("income")} onKeyDown={(event) => handleViewKey(event, event.key === "End" || event.key === "ArrowRight" ? "expenses" : "income")}><span aria-hidden="true">↓</span><strong>Income audit trail</strong><small>{incomeEntries.length} visible records</small></button>
-              <button id="expenses-tab" type="button" role="tab" tabIndex={activeView === "expenses" ? 0 : -1} aria-selected={activeView === "expenses"} aria-controls="audit-records-panel" className={activeView === "expenses" ? "active" : ""} onClick={() => changeView("expenses")} onKeyDown={(event) => handleViewKey(event, event.key === "Home" || event.key === "ArrowLeft" ? "income" : "expenses")}><span aria-hidden="true">↑</span><strong>Expense audit trail</strong><small>{expenseEntries.length} supplier payments</small></button>
+            <div className="audit-switcher">
+              <div className="audit-view-tabs" role="tablist" aria-label="Choose audit trail">
+                <button id="income-tab" type="button" role="tab" tabIndex={activeView === "income" ? 0 : -1} aria-selected={activeView === "income"} aria-controls="audit-records-panel" className={activeView === "income" ? "active" : ""} onClick={() => changeView("income")} onKeyDown={(event) => handleViewKey(event, event.key === "End" || event.key === "ArrowRight" ? "expenses" : "income")}><span aria-hidden="true">↓</span><strong>Income audit trail</strong><small>{incomeEntries.length} individual contributions</small></button>
+                <button id="expenses-tab" type="button" role="tab" tabIndex={activeView === "expenses" ? 0 : -1} aria-selected={activeView === "expenses"} aria-controls="audit-records-panel" className={activeView === "expenses" ? "active" : ""} onClick={() => changeView("expenses")} onKeyDown={(event) => handleViewKey(event, event.key === "Home" || event.key === "ArrowLeft" ? "income" : "expenses")}><span aria-hidden="true">↑</span><strong>Expense audit trail</strong><small>{expenseEntries.length} supplier payments</small></button>
+              </div>
+              <button className="full-audit-download" type="button" onClick={downloadFullAuditCsv}><span aria-hidden="true">⇩</span><strong>Download full audit</strong><small>Income, expenses and commitments · CSV</small></button>
             </div>
 
             <section id="audit-records-panel" className={`audit-panel ${activeView === "income" ? "audit-panel-income" : "audit-panel-expense"}`} role="tabpanel" aria-labelledby={activeView === "income" ? "income-tab" : "expenses-tab"}>
@@ -170,20 +189,20 @@ export function PublicLedger({ campaign, seedEvents }: { campaign: Campaign; see
 
               <div className="audit-filters" aria-label={`${activeView} audit filters`}>
                 <div className="field"><label htmlFor="audit-search">Search records</label><input id="audit-search" type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder={activeView === "income" ? "Name or reference" : "Supplier, invoice or milestone"} /></div>
-                <div className="field"><label htmlFor="audit-status">Status</label><select id="audit-status" value={status} onChange={(event) => setStatus(event.target.value as AuditStatus)}><option value="all">All statuses</option>{activeView === "income" ? <><option value="settled">Settled</option><option value="aggregate">Aggregated settlements</option></> : <option value="paid">Paid</option>}</select></div>
+                <div className="field"><label htmlFor="audit-status">Status</label><select id="audit-status" value={status} onChange={(event) => setStatus(event.target.value as AuditStatus)}><option value="all">All statuses</option>{activeView === "income" ? <option value="settled">Settled</option> : <option value="paid">Paid</option>}</select></div>
                 <div className="field"><label htmlFor="audit-date">Date</label><select id="audit-date" value={dateRange} onChange={(event) => setDateRange(event.target.value as AuditDateRange)}><option value="all">All dates</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select></div>
-                <button className="button button-secondary audit-export" type="button" onClick={downloadAuditCsv}>Download CSV</button>
+                <button className="button button-secondary audit-export" type="button" onClick={downloadAuditCsv}>Download this view (CSV)</button>
               </div>
 
               <p className="audit-result-count" aria-live="polite">Showing {pagedEntries.length} of {filteredEntries.length} matching records</p>
 
               {activeView === "income" ? (
-                <div className="ledger-table" role="region" aria-label="Campaign income audit" tabIndex={0}>
-                  <table><thead><tr><th scope="col">Date</th><th scope="col">Contributor</th><th scope="col">Reference &amp; route</th><th scope="col">Status</th><th scope="col">Income</th></tr></thead><tbody>{pagedEntries.length ? pagedEntries.map((event) => <tr key={event.id}><td>{dateFormat.format(new Date(event.occurredAt))}</td><td><strong>{event.label}</strong><small>{event.detail}</small></td><td><strong>{event.reference ?? "Recorded contribution"}</strong><small>{event.paymentMethod ?? "Settlement route recorded"}</small></td><td><span className="ledger-status status-in"><CheckIcon size={14} /> {event.recordType === "aggregate" ? "Settled aggregate" : "Settled"}</span></td><td className="amount-in">+{formatZar(event.amountCents)}</td></tr>) : <tr><td colSpan={5}>No income records match these filters.</td></tr>}</tbody></table>
+                <div className="ledger-table" role="region" aria-label="Campaign income audit">
+                  <table><thead><tr><th scope="col">Date</th><th scope="col">Contributor</th><th scope="col">Reference &amp; route</th><th scope="col">Status</th><th scope="col">Income</th></tr></thead><tbody>{pagedEntries.length ? pagedEntries.map((event) => <tr key={event.id}><td data-label="Date">{dateFormat.format(new Date(event.occurredAt))}</td><td data-label="Contributor"><strong>{event.label}</strong><small>{event.detail}</small></td><td data-label="Reference & route"><strong>{event.reference ?? "Recorded contribution"}</strong><small>{event.paymentMethod ?? "Settlement route recorded"}</small></td><td data-label="Status"><span className="ledger-status status-in"><CheckIcon size={14} /> Settled</span></td><td data-label="Income" className="amount-in">+{formatZar(event.amountCents)}</td></tr>) : <tr><td colSpan={5}>No income records match these filters.</td></tr>}</tbody></table>
                 </div>
               ) : (
-                <div className="ledger-table expense-ledger-table" role="region" aria-label="Campaign expense audit" tabIndex={0}>
-                  <table><thead><tr><th scope="col">Date</th><th scope="col">Supplier</th><th scope="col">Audit evidence</th><th scope="col">Approval &amp; payment</th><th scope="col">Expense</th></tr></thead><tbody>{pagedEntries.length ? pagedEntries.map((event) => <tr key={event.id}><td>{dateFormat.format(new Date(event.occurredAt))}</td><td><strong>{event.label}</strong><small>{event.supplierVerification ?? "CitizenX verified supplier"}</small></td><td><strong>{event.milestone ?? event.detail}</strong><dl className="audit-record-meta"><div><dt>Invoice</dt><dd>{event.invoiceReference ?? "Recorded"}</dd></div><div><dt>VAT</dt><dd>{event.vatTreatment ?? "Not applicable"}</dd></div><div><dt>Procurement</dt><dd>{event.procurementMethod ?? "Evidence reviewed"}</dd></div></dl>{event.evidenceHref ? <Link className="audit-evidence-link" href={event.evidenceHref}>{event.evidenceLabel ?? "View evidence"}</Link> : null}</td><td><dl className="audit-record-meta"><div><dt>Approver</dt><dd>{event.approver ?? "Admin approved"}</dd></div><div><dt>Conflict check</dt><dd>{event.conflictDeclaration ?? "Recorded"}</dd></div><div><dt>Payment ref</dt><dd>{event.paymentReference ?? event.reference ?? "Recorded"}</dd></div></dl><span className="ledger-status status-out"><CheckIcon size={14} /> Paid</span></td><td className="amount-out">−{formatZar(event.amountCents)}</td></tr>) : <tr><td colSpan={5}>No supplier expenses match these filters.</td></tr>}</tbody></table>
+                <div className="ledger-table expense-ledger-table" role="region" aria-label="Campaign expense audit">
+                  <table><thead><tr><th scope="col">Supplier &amp; date</th><th scope="col">Audit evidence</th><th scope="col">Approval &amp; payment</th><th scope="col">Expense</th></tr></thead><tbody>{pagedEntries.length ? pagedEntries.map((event) => <tr key={event.id}><td data-label="Supplier & date"><strong>{event.label}</strong><small>{dateFormat.format(new Date(event.occurredAt))} · {event.supplierVerification ?? "CitizenX verified supplier"}</small></td><td data-label="Audit evidence"><strong>{event.milestone ?? event.detail}</strong><dl className="audit-record-meta"><div><dt>Invoice</dt><dd>{event.invoiceReference ?? "Recorded"}</dd></div><div><dt>VAT</dt><dd>{event.vatTreatment ?? "Not applicable"}</dd></div><div><dt>Procurement</dt><dd>{event.procurementMethod ?? "Evidence reviewed"}</dd></div></dl>{event.evidenceHref ? <Link className="audit-evidence-link" href={event.evidenceHref}>{event.evidenceLabel ?? "View evidence"}</Link> : null}</td><td data-label="Approval & payment"><dl className="audit-record-meta"><div><dt>Approver</dt><dd>{event.approver ?? "Admin approved"}</dd></div><div><dt>Conflict check</dt><dd>{event.conflictDeclaration ?? "Recorded"}</dd></div><div><dt>Payment ref</dt><dd>{event.paymentReference ?? event.reference ?? "Recorded"}</dd></div></dl><span className="ledger-status status-out"><CheckIcon size={14} /> Paid</span></td><td data-label="Expense" className="amount-out">−{formatZar(event.amountCents)}</td></tr>) : <tr><td colSpan={4}>No supplier expenses match these filters.</td></tr>}</tbody></table>
                 </div>
               )}
 
@@ -191,14 +210,13 @@ export function PublicLedger({ campaign, seedEvents }: { campaign: Campaign; see
             </section>
 
             {activeView === "expenses" ? <section className="protected-allocation-panel" aria-labelledby="protected-title"><div><p className="eyebrow">Protected commitments</p><h2 id="protected-title">Allocated, but not yet paid</h2><p>These amounts remain inside the protected campaign balance until evidence and an admin payment decision are complete.</p></div><ul>{protectedEntries.map((event) => <li key={event.id}><span><strong>{event.label}</strong><small>{event.reference} · {event.detail}</small>{event.evidenceHref ? <Link className="audit-evidence-link" href={event.evidenceHref}>{event.evidenceLabel ?? "Review evidence"}</Link> : null}</span><b>{formatZar(event.amountCents)}</b></li>)}</ul></section> : null}
-          </div>
 
-          <aside className="ledger-explainer">
-            <p className="eyebrow">Oversight guide</p><h2>{activeView === "income" ? "What to verify in income" : "What to verify in spending"}</h2>
-            {activeView === "income" ? <><p>Check the funding source, transaction reference, settlement route and whether a public identity has been withheld.</p><ul><li><CheckIcon /> Individual and aggregate records are labelled</li><li><CheckIcon /> Platform tips never increase campaign income</li><li><CheckIcon /> Public anonymity does not expose private identity data</li><li><CheckIcon /> Refunds and variances remain visible in the summary</li></ul></> : <><p>Check the supplier, milestone, invoice, VAT treatment, procurement evidence, approver and conflict declaration before accepting a payment as accounted for.</p><ul><li><CheckIcon /> Supplier verification is recorded</li><li><CheckIcon /> Invoice and milestone evidence are linked</li><li><CheckIcon /> Approval and payment references are separated</li><li><CheckIcon /> Protected commitments are not reported as paid expenses</li></ul></>}
-            <div className="reconciliation-equation"><span>Income</span><b>{formatZar(totalIncome)}</b><span>Less expenses</span><b>−{formatZar(totalExpenses)}</b><strong>Protected balance</strong><strong>{formatZar(protectedBalance)}</strong></div>
-            <p className="audit-boundary"><strong>Public-interest record, not statutory certification.</strong><br />CSD, VAT and procurement fields are demo oversight references. CitizenX does not claim PFMA, MFMA or government procurement compliance.</p>
-          </aside>
+            <section className="oversight-guide-panel" aria-labelledby="oversight-guide-title">
+              <div><p className="eyebrow">Oversight guide</p><h2 id="oversight-guide-title">{activeView === "income" ? "What to verify in income" : "What to verify in spending"}</h2><p>{activeView === "income" ? "Check the funding source, transaction reference, settlement route and whether a public identity has been withheld." : "Check the supplier, milestone, invoice, VAT treatment, procurement evidence, approver and conflict declaration before accepting a payment as accounted for."}</p></div>
+              <ul>{activeView === "income" ? <><li><CheckIcon /> Every demo contribution is shown as an individual record</li><li><CheckIcon /> Platform tips never increase campaign income</li><li><CheckIcon /> Public anonymity does not expose private identity data</li><li><CheckIcon /> Refunds and variances remain visible in the summary</li></> : <><li><CheckIcon /> Supplier verification is recorded</li><li><CheckIcon /> Invoice and milestone evidence are linked</li><li><CheckIcon /> Approval and payment references are separated</li><li><CheckIcon /> Protected commitments are not reported as paid expenses</li></>}</ul>
+              <div><div className="reconciliation-equation"><span>Income</span><b>{formatZar(totalIncome)}</b><span>Less expenses</span><b>−{formatZar(totalExpenses)}</b><strong>Protected balance</strong><strong>{formatZar(protectedBalance)}</strong></div><p className="audit-boundary"><strong>Public-interest record, not statutory certification.</strong><br />CSD, VAT and procurement fields are demo oversight references. CitizenX does not claim PFMA, MFMA or government procurement compliance.</p></div>
+            </section>
+          </div>
         </div>
       </section>
     </>

@@ -70,7 +70,7 @@ export default function AboutPage() {
 
       <section className="section section-ivory" aria-labelledby="involved-title"><div className="shell"><div className="section-heading"><div><p className="eyebrow">Get involved</p><h2 id="involved-title">Help build a new standard for transparent civic funding.</h2></div><p className="section-intro">We are inviting values-aligned organisations and individuals to join CitizenX at its earliest stage.</p></div><div className="partner-grid">{partners.map((partner) => <article key={partner.title}><span className="partner-icon" aria-hidden="true"><FeatureIcon name={partner.icon} /></span><h3>{partner.title}</h3><p>{partner.copy}</p></article>)}</div></div></section>
 
-      <section className="cta-band"><div className="shell"><div><p className="eyebrow eyebrow-light">Founding network</p><h2>Help shape the pilot and the trust model behind it.</h2></div><div className="button-row"><Link className="button button-light" href="/sandbox/">Explore the MVP <ArrowIcon /></Link><a className="button button-ghost" href="https://www.citizenx.fund/#join">Join the founding network</a></div></div></section>
+      <section className="cta-band"><div className="shell"><div><p className="eyebrow eyebrow-light">Founding network</p><h2>Help shape the pilot and the trust model behind it.</h2></div><div className="button-row"><Link className="button button-light" href="/sandbox/">Explore the MVP <ArrowIcon /></Link><Link className="button button-ghost" href="/join/">Join the founding network</Link></div></div></section>
     </>
   );
 }

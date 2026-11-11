@@ -19,11 +19,12 @@ export function Footer() {
           <Link href="/how-it-works/">How it works</Link>
           <Link href="/about/">About CitizenX</Link>
           <Link href="/accessibility/">Accessibility</Link>
-          <a href="https://www.citizenx.fund/">Founding network</a>
+          <Link href="/join/">Founding network</Link>
         </nav>
         <div>
           <p className="eyebrow">Need help?</p>
           <a href="mailto:hello@citizenx.fund">hello@citizenx.fund</a>
+          <p><Link href="/join/">Send a structured enquiry</Link></p>
           <p className="footer-note">Built accessibly for South Africa, with Africa in mind.</p>
         </div>
       </div>
