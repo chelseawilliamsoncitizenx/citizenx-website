@@ -15,10 +15,15 @@ export default function HomePage() {
             <p className="eyebrow eyebrow-light">Democracy, funded by the people.</p>
             <h1>Back the change you want to see.</h1>
             <p className="hero-lead">Find verified civic campaigns, contribute securely, and follow how every rand is managed and used.</p>
-            <div className="button-row">
-              <Link className="button button-primary" href="/discover/">Find a campaign <ArrowIcon /></Link>
-              <Link className="button button-ghost" href="/how-it-works/">See how funds are protected</Link>
-              <Link className="button button-ghost" href="/join/">Join the founding network</Link>
+            <div className="hero-actions">
+              <Link className="button hero-founder-button" href="/join/">
+                <span><small>Help build CitizenX</small><strong>Join the founding network</strong></span>
+                <ArrowIcon />
+              </Link>
+              <div className="button-row">
+                <Link className="button button-primary" href="/discover/">Find a campaign <ArrowIcon /></Link>
+                <Link className="button button-ghost" href="/how-it-works/">See how funds are protected</Link>
+              </div>
             </div>
             <p className="pilot-note"><span>QA pilot</span> Use demo information only. No real payments are processed.</p>
           </div>
