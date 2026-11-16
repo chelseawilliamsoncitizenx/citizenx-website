@@ -850,6 +850,9 @@ button:disabled { cursor: not-allowed; opacity: 0.5; }
 .supplier-project-card h3 { margin: 15px 0 8px; }
 .supplier-project-card p { color: var(--ink-soft); font-size: 0.78rem; }
 .supplier-project-card small { color: var(--ink-soft); font-size: 0.66rem; }
+.supplier-project-campaign-link { display: flex; gap: 7px; justify-content: space-between; align-items: center; min-height: 44px; margin-top: 12px; padding-top: 10px; color: var(--teal-deep); border-top: 1px solid var(--line); font-size: 0.72rem; font-weight: 800; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.supplier-project-campaign-link span { flex: 0 0 auto; font-size: 1rem; transition: transform 160ms ease; }
+.supplier-project-campaign-link:hover span { transform: translateX(3px); }
 .supplier-profile-reviews > div { display: grid; gap: 12px; margin-top: 22px; }
 .supplier-profile-reviews blockquote { margin: 0; padding: 22px; background: var(--white); border: 1px solid var(--line); border-radius: 12px; }
 .supplier-profile-reviews blockquote p { margin: 10px 0; }

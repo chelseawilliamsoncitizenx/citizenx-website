@@ -69,7 +69,12 @@ const roles = Object.entries(roleLabels) as Array<[SandboxRole, string]>;
 
 function MenuItems({ items }: { items: NavItem[] }) {
   return items.map((item) => (
-    <Link href={item.href} className="menu-link" key={`${item.href}-${item.label}`}>
+    <Link
+      href={item.href}
+      className="menu-link"
+      key={`${item.href}-${item.label}`}
+      onClick={(event) => event.currentTarget.closest("details")?.removeAttribute("open")}
+    >
       <span className="menu-icon" aria-hidden="true"><FeatureIcon name={item.icon} size={19} /></span>
       <span><strong>{item.label}</strong>{item.description ? <small>{item.description}</small> : null}</span>
     </Link>

@@ -11,6 +11,14 @@ function Stars({ rating }: { rating: number }) {
   return <span className="stars" role="img" aria-label={`${rating.toFixed(1)} out of 5 stars`}>{[1, 2, 3, 4, 5].map((star) => <StarIcon size={18} className={star <= Math.round(rating) ? "filled" : ""} key={star} />)}</span>;
 }
 
+function CampaignProjectLink({ campaign }: { campaign: Campaign }) {
+  return (
+    <Link className="supplier-project-campaign-link" href={`/campaigns/${campaign.slug}/`}>
+      View {campaign.title} campaign <span aria-hidden="true">→</span>
+    </Link>
+  );
+}
+
 export function SupplierProfile({ supplier, campaigns }: { supplier: Supplier; campaigns: Campaign[] }) {
   const [role, setRole] = useState<SandboxRole>("citizen");
   const [assignments, setAssignments] = useState<SandboxAssignment[]>([]);
@@ -107,7 +115,13 @@ export function SupplierProfile({ supplier, campaigns }: { supplier: Supplier; c
       </section>
 
       <section className="section section-ivory"><div className="shell supplier-profile-layout"><div><section aria-labelledby="services-title"><p className="eyebrow">Services</p><h2 id="services-title">What {supplier.name} provides.</h2><ul className="service-tags service-tags-large">{supplier.services.map((service) => <li key={service}>{service}</li>)}</ul></section>
-        <section className="supplier-projects" aria-labelledby="projects-title"><p className="eyebrow">Previous work</p><h2 id="projects-title">Completed CitizenX projects.</h2><div className="supplier-project-grid">{completedAssignments.map((assignment) => <article className="supplier-project-card" key={assignment.id}>{assignment.completionPhotoDataUrl ? <div className="supplier-project-image"><img src={assignment.completionPhotoDataUrl} alt={assignment.completionPhotoAlt ?? "Supplier completion evidence"} /></div> : null}<div><span className="verified-badge"><CheckIcon size={14} /> Sandbox completion approved</span><h3>{assignment.campaignUpdateTitle ?? assignment.milestone}</h3><p>{assignment.evidenceNote ?? assignment.scope}</p><small>{assignment.campaignTitle}</small></div></article>)}{supplier.previousProjects.map((project) => <article className="supplier-project-card" key={project.id}>{project.image ? <div className="supplier-project-image"><Image src={project.image} alt={project.imageAlt ?? "Completed supplier project"} width={900} height={600} sizes="(max-width: 660px) calc(100vw - 56px), 35vw" /></div> : null}<div><span className="verified-badge"><CheckIcon size={14} /> Verified engagement</span><h3>{project.title}</h3><p>{project.summary}</p><small>{project.campaign} · {project.location} · {project.completedAt}</small></div></article>)}</div></section>
+        <section className="supplier-projects" aria-labelledby="projects-title"><p className="eyebrow">Previous work</p><h2 id="projects-title">Completed CitizenX projects.</h2><div className="supplier-project-grid">{completedAssignments.map((assignment) => {
+          const publicCampaign = campaigns.find((campaign) => campaign.slug === assignment.campaignSlug);
+          return <article className="supplier-project-card" key={assignment.id}>{assignment.completionPhotoDataUrl ? <div className="supplier-project-image"><img src={assignment.completionPhotoDataUrl} alt={assignment.completionPhotoAlt ?? "Supplier completion evidence"} /></div> : null}<div><span className="verified-badge"><CheckIcon size={14} /> Sandbox completion approved</span><h3>{assignment.campaignUpdateTitle ?? assignment.milestone}</h3><p>{assignment.evidenceNote ?? assignment.scope}</p>{publicCampaign ? <CampaignProjectLink campaign={publicCampaign} /> : assignment.campaignTitle ? <small>{assignment.campaignTitle}</small> : null}</div></article>;
+        })}{supplier.previousProjects.map((project) => {
+          const publicCampaign = campaigns.find((campaign) => campaign.slug === project.campaignSlug);
+          return <article className="supplier-project-card" key={project.id}>{project.image ? <div className="supplier-project-image"><Image src={project.image} alt={project.imageAlt ?? "Completed supplier project"} width={900} height={600} sizes="(max-width: 660px) calc(100vw - 56px), 35vw" /></div> : null}<div><span className="verified-badge"><CheckIcon size={14} /> Verified engagement</span><h3>{project.title}</h3><p>{project.summary}</p><small>{project.location} · {project.completedAt}</small>{publicCampaign ? <CampaignProjectLink campaign={publicCampaign} /> : <small>{project.campaign}</small>}</div></article>;
+        })}</div></section>
         <section className="supplier-profile-reviews" aria-labelledby="reviews-title"><p className="eyebrow">Verified reviews</p><h2 id="reviews-title">Feedback from completed work.</h2><div>{allReviews.length ? allReviews.map((review) => <blockquote key={review.id}><Stars rating={review.rating} /><p>“{review.text}”</p><footer>{review.author} · {review.campaign} · {review.date}</footer></blockquote>) : <p>No public reviews yet.</p>}</div></section>
       </div><aside className="supplier-profile-aside"><p className="eyebrow">Supplier assurance</p><h2>Verified, not endorsed.</h2><p>CitizenX verification confirms that supplied business information was reviewed for this QA demo. Campaign Creators remain responsible for scope, quotation and completion decisions.</p><dl><div><dt>Verification</dt><dd>CitizenX verified</dd></div><div><dt>Service area</dt><dd>{supplier.serviceArea}</dd></div><div><dt>Demo email</dt><dd>{supplier.email}</dd></div></dl><Link className="button button-secondary button-wide" href="/supplier-engagements/">Open engagement workspace</Link></aside></div></section>
 
