@@ -13,8 +13,9 @@ export default function HomePage() {
         <div className="shell hero-grid">
           <div className="hero-copy">
             <p className="eyebrow eyebrow-light">Democracy, funded by the people.</p>
-            <h1>Back the change you want to see.</h1>
-            <p className="hero-lead">Find verified civic campaigns, contribute securely, and follow how every rand is managed and used.</p>
+            <h1>Crowdfunding for accountable civic action.</h1>
+            <p className="hero-lead">CitizenX is building South Africa’s secure, non-partisan crowdfunding platform for verified civic and political leaders—giving people a transparent way to fund meaningful change and follow every rand from contribution to delivery.</p>
+            <div className="about-origin"><span aria-hidden="true"><FeatureIcon name="globe" /></span><p><strong>Starting in South Africa.</strong> Built to grow across Africa.</p></div>
             <div className="hero-actions">
               <Link className="button hero-founder-button" href="/join/">
                 <span><small>Help build CitizenX</small><strong>Join the founding network</strong></span>
