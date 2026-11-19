@@ -966,6 +966,9 @@ button:disabled { cursor: not-allowed; opacity: 0.5; }
 .join-form { padding: clamp(25px, 5vw, 46px); background: var(--white); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 12px 40px rgba(42, 35, 51, 0.08); }
 .join-form .form-grid { margin-bottom: 22px; }
 .optional-label { color: var(--ink-soft); font-weight: 500; }
+.join-email-fallback { margin: 18px 0 0; padding: 14px 16px; background: var(--teal-tint); color: var(--ink); border-left: 4px solid var(--teal); border-radius: 8px; font-size: 1rem; line-height: 1.5; }
+.join-email-fallback strong { color: var(--teal-deep); }
+.join-email-fallback a { color: var(--teal-deep); font-weight: 800; overflow-wrap: anywhere; }
 .join-form-actions { margin-top: 22px; }
 .join-status {
   margin: 20px 0 0;

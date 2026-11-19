@@ -87,6 +87,7 @@ export function FoundingNetworkForm() {
         </div>
       </div>
       <p className="fine-print">Selecting “Prepare email” opens your default email application. CitizenX receives nothing until you review and send the message.</p>
+      <p className="join-email-fallback"><strong>Email app not opening?</strong> Send your message directly to <a href="mailto:hello@citizenx.fund?subject=CitizenX%20founding%20network%20enquiry">hello@citizenx.fund</a>.</p>
       <div className="form-actions join-form-actions">
         <button className="button button-primary" type="submit">Prepare email to CitizenX</button>
         <button className="button button-secondary" type="button" onClick={copyDetails}>Copy email details</button>
